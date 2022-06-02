@@ -11,12 +11,18 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var firstShowedVC: UIViewController?
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
-        // swiftlint:disable:next unused_optional_binding
-        guard let _ = (scene as? UIWindowScene) else { return }
+
+        guard let winScene = (scene as? UIWindowScene) else { return }
+        let window = UIWindow(windowScene: winScene)
+        let router: RouterProtocol = Router()
+
+        self.window = router.makeWinWithStartVC(fromWindow: window)
+
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
