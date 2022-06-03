@@ -93,13 +93,20 @@ class WeatherInfoModel: WeatherInfoModelProtocol {
         for (index, location) in locations.enumerated() {
             netWorkManager.fetchData(located: location) {[weak self] (result) in
 
-                guard let strongSelf = self else { return }
+                guard let strongSelf = self else {
+                    return
+                }
 
                 switch result {
                 case .success(let weather):
-                    if strongSelf.storage.count <= index {
+                    if strongSelf.storage.count <= index && (index - strongSelf.storage.count) < 1 {
                         strongSelf.storage.insert(weather, at: index)
-                    } else {
+                    } else if strongSelf.storage.count <= index && (index - strongSelf.storage.count) >= 1 {
+                        while strongSelf.storage.count != index {
+                            strongSelf.storage.append(weather)
+                        }
+                        strongSelf.storage.insert(weather, at: index)
+                    } else if strongSelf.storage.count > index {
                         strongSelf.storage[index] = weather
                     }
                     strongSelf.delegate?.refresh(model: strongSelf)
