@@ -77,7 +77,7 @@ class Router: RouterProtocol {
                 WeatherNetworkManager.shared.fetchLocationOfCity(named: name) { result in
                     switch result {
                     case .success(let location):
-                        let locationString = location[0].response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos
+                        let locationString = location[0].response.geoObjectCollection.featureMember[0].geoObject.point.pos
                         let lonAndLat = locationString.components(separatedBy: " ")
                         let long = Float(lonAndLat[0]) ?? 0
                         let lat = Float(lonAndLat[1]) ?? 0
