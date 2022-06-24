@@ -72,11 +72,19 @@ class Router: RouterProtocol {
                                         handler: { _ in
 
             if let name = alertVC.textFields?.first?.text {
+
+                guard !name.isEmpty else {
+                    return
+                }
+
                 print("Новый город: \(name)")
 
                 WeatherNetworkManager.shared.fetchLocationOfCity(named: name) { result in
                     switch result {
                     case .success(let location):
+                        guard !location.isEmpty, !location[0].response.geoObjectCollection.featureMember.isEmpty else {
+                            return
+                        }
                         let locationString = location[0].response.geoObjectCollection.featureMember[0].geoObject.point.pos
                         let lonAndLat = locationString.components(separatedBy: " ")
                         let long = Float(lonAndLat[0]) ?? 0

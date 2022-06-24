@@ -70,7 +70,7 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
 
             if error == nil, let parsData = data {
                 guard let weather = try? strongSelf.decoder.decode(TestWeatherModelDaily.self, from: parsData) else {
-                    print("Модель не спарсилась. Будет пустой массив")
+                    print("Модель не спарсилась. Будет пустой массив.")
                     print("Но получил data \(parsData)")
                     result = .success(weather: [])
                     return
@@ -123,7 +123,6 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
                     result = .success(location: [])
                     return
                 }
-                print("Модель LocationModel успешно спарсилась")
                 result = .success(location: [location])
             } else {
                 result = .failure(error: error!)
