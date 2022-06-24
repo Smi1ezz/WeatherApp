@@ -203,6 +203,9 @@ extension MainViewController: UIScrollViewDelegate {
 extension MainViewController: PageControllDelegate {
     func changeNaviTitle() {
         if !weatherStorageModel.storage.isEmpty {
+//            guard !weatherStorageModel.storage[locationPages.currentPage].isEmpty else {
+//                return
+//            }
             let localWeather = weatherStorageModel.storage[locationPages.currentPage][0]
             self.navigationItem.title = localWeather.timezone
         }
