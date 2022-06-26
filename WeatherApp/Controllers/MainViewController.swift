@@ -125,9 +125,11 @@ class MainViewController: UIViewController {
 
     @objc
     func goToSettings() {
-        // router show settings VC - функция настройки в разработке
+        // router show settings VC - функция настройки в разработке.
+        // Сейчас это кнокпа сброса данных. Имитация первого запуска
         //        router?.showSettingsVC()
 
+        print("данные приложения сброшены. Имитация первого запуска")
         UserDefaults.standard.set(false, forKey: UserDefaultsKeys.onboardingCompleted.rawValue)
         UserDefaults.standard.set(object: [Location](), forKey: UserDefaultsKeys.userLocations.rawValue)
         print("\(UserDefaults.standard.bool(forKey: UserDefaultsKeys.onboardingCompleted.rawValue))")
@@ -161,12 +163,13 @@ extension MainViewController: UICollectionViewDataSource {
         cell.setCell(router: router ?? Router())
 
         if !weatherStorageModel.storage.isEmpty {
-            let localWeather = weatherStorageModel.storage[indexPath.section][0]
-            cell.setupCellsSubviewsWithInfo(about: localWeather)
-            self.navigationItem.title = localWeather.timezone
-            return cell
+            if !weatherStorageModel.storage[indexPath.section].isEmpty {
+                let localWeather = weatherStorageModel.storage[indexPath.section][0]
+                cell.setupCellsSubviewsWithInfo(about: localWeather)
+                self.navigationItem.title = localWeather.timezone
+                return cell
+            }
         }
-
         return cell
     }
 
@@ -200,6 +203,9 @@ extension MainViewController: UIScrollViewDelegate {
 extension MainViewController: PageControllDelegate {
     func changeNaviTitle() {
         if !weatherStorageModel.storage.isEmpty {
+//            guard !weatherStorageModel.storage[locationPages.currentPage].isEmpty else {
+//                return
+//            }
             let localWeather = weatherStorageModel.storage[locationPages.currentPage][0]
             self.navigationItem.title = localWeather.timezone
         }
