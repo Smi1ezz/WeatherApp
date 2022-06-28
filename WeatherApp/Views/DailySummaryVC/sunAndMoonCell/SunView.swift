@@ -57,7 +57,6 @@ class SunView: UIView {
 
     private func setupSubviews() {
         [titleLabel, sunImgLine, sunDawnTextLine, sunDuskTextLine, moonImgLine, moonDawnTextLine, moonDuskTextLine, centerBorderLine].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(item)
         }
 

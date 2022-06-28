@@ -42,7 +42,6 @@ class BackgroundView: UIView {
 
     private func setupSubviews() {
         [firstCloud, secondCloud, thirdCloud].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(item)
         }
         setupConstraints()

@@ -35,7 +35,6 @@ class TextLineView: UIView {
 
     private func setupSubviews() {
         [descriptionLabel, valueLabel].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(item)
         }
         setupConstraints()

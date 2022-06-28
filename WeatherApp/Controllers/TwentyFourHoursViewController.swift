@@ -21,7 +21,6 @@ class TwentyFourHoursViewController: UIViewController {
         twentyFourTableView.dataSource = self
         twentyFourTableView.register(TwentyFourHoursTableViewCell.self, forCellReuseIdentifier: "TwentyFourHoursTableViewCell")
         view.addSubview(twentyFourTableView)
-        twentyFourTableView.translatesAutoresizingMaskIntoConstraints = false
         setupConstraints()
     }
 

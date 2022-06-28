@@ -54,7 +54,6 @@ class ToggleView: UIView {
 
     private func setupSubviews() {
         [firstButton, secondButton].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(item)
         }
         setupConstraints()

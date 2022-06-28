@@ -60,7 +60,7 @@ class Router: RouterProtocol {
 
     func showAddCityAlertVC(onMainVC mainVC: MainViewController) {
         let alertVC = UIAlertController(title: "Добавить город",
-                                        message: "для добавления, введите название города английскими буквами",
+                                        message: "для добавления, введите название города английскими буквами. UPD API перестал корректно работать в городами России. Вводите столицы мира",
                                         preferredStyle: .alert)
 
         alertVC.addTextField(configurationHandler: { textField in
@@ -91,14 +91,15 @@ class Router: RouterProtocol {
                         let lat = Float(lonAndLat[1]) ?? 0
 
                         let loc = Location(latitude: lat, longitude: long)
-                        print("+++ \(loc.longitude), \(loc.latitude)")
+                        print("longitude \(loc.longitude), latitude \(loc.latitude)")
 
                         let userData = UserDefaults.standard
                         if !userData.bool(forKey: UserDefaultsKeys.locationAvailible.rawValue) {
                             userData.set(true, forKey: UserDefaultsKeys.locationAvailible.rawValue)
                         }
-                        mainVC.refreshData(withNewCity: loc)
+                        mainVC.refrashDataOf(newLocation: loc)
                         mainVC.viewWillAppear(true)
+                        alertVC.dismiss(animated: true, completion: nil)
 
                     case .failure(let error):
                         print("ERROR !!!  \(error.localizedDescription)")
@@ -110,9 +111,7 @@ class Router: RouterProtocol {
 
         alertVC.addAction(UIAlertAction(title: "Отмена",
                                         style: .cancel,
-                                        handler: { _ in
-            print("UIAlertAction(title: Отмена)")
-        }))
+                                        handler: nil))
 
         mainVC.present(alertVC, animated: true)
     }

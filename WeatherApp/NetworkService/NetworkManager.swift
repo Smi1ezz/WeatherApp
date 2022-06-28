@@ -9,7 +9,7 @@ import Foundation
 // import UIKit
 
 protocol WeatherNetworkManagerProtocol {
-    func fetchData(located: Locolizable,
+    func fetchData(located: Localizable,
                    complition: @escaping (ObtainWeatherResults) -> Void)
     func fetchLocationOfCity(named cityName: String, complition: @escaping (ObtainLocationResults) -> Void)
 }
@@ -31,7 +31,7 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
 
     static let shared = WeatherNetworkManager()
 
-    func fetchData(located: Locolizable,
+    func fetchData(located: Localizable,
                    complition: @escaping (ObtainWeatherResults) -> Void) {
 
         let adressUrl = "https://ru.api.openweathermap.org/data/2.5/onecall?"
@@ -57,7 +57,7 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
             var result: ObtainWeatherResults
 
             defer {
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     complition(result)
                 }
             }
@@ -70,8 +70,7 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
 
             if error == nil, let parsData = data {
                 guard let weather = try? strongSelf.decoder.decode(TestWeatherModelDaily.self, from: parsData) else {
-                    print("Модель не спарсилась. Будет пустой массив.")
-                    print("Но получил data \(parsData)")
+                    print("Модель TestWeatherModelDaily не спарсилась. Будет пустой массив.Но получил data \(parsData)")
                     result = .success(weather: [])
                     return
                 }
@@ -118,11 +117,11 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
 
             if error == nil, let parsData = data {
                 guard let location = try? strongSelf.decoder.decode(LocationModel.self, from: parsData) else {
-                    print("Модель не спарсилась. Будет пустой массив")
-                    print("Но получил data \(parsData)")
+                    print("Модель LocationModel не спарсилась. Будет пустой массив. Но получил data \(parsData)")
                     result = .success(location: [])
                     return
                 }
+                print("Модель LocationModel успешно спарсилась")
                 result = .success(location: [location])
             } else {
                 result = .failure(error: error!)

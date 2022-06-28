@@ -42,7 +42,6 @@ class SituationLineViewForDailyVC: UIView {
 
     private func setupSubviews() {
         [weatherImg, descriptionLabel, valueLabel].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(item)
         }
         setupConstraints()

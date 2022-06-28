@@ -73,7 +73,6 @@ class HoursCollectionViewCell: UICollectionViewCell {
 
     private func setupSubviews() {
         [hourLabel, temperatureLabel, weatherImage].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(item)
         }
         setupConstraints()

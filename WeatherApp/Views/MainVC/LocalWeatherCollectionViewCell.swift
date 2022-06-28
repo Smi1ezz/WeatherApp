@@ -62,7 +62,6 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
     private func setupSubviews() {
         [shortInfoView, weatherForDayButton, hoursCollectionView, everyDayTableTitleView, everyDayWeatherTableView].forEach { item in
             localWeatherScrollView.addSubview(item)
-            item.translatesAutoresizingMaskIntoConstraints = false
         }
 
         hoursCollectionView.delegate = self
@@ -76,7 +75,6 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
 
         weatherForDayButton.addTarget(self, action: #selector(setup24ButtonAction), for: .touchUpInside)
 
-        localWeatherScrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(localWeatherScrollView)
     }
 
@@ -93,7 +91,6 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
 
     @objc
     func setup24ButtonAction(target: Any?, changeTime: Selector) {
-        print("нажал на 24 часа - переход на экран погодаНа24Часа")
         guard let weather = weather else {
             return
         }
@@ -102,8 +99,7 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
 
     @objc
     func setup7to25ButtonAction(target: Any?, changeDate: Selector) {
-        // 7 дней и на 25 дней - если найду такое API
-        print("нажал на 7дней - 25дней, смена ячее. Если найду такое АПИ!!!")
+        // на 7 дней и на 25 дней - если найду такое API
     }
 
     private func setupConstraints() {
@@ -183,7 +179,6 @@ extension LocalWeatherCollectionViewCell: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("нажал на погоду на час. Открыть на 24 часа")
         guard let weather = self.weather else { return }
         router?.showTwentyFourHoursVC(withWeather: weather)
     }
@@ -222,7 +217,6 @@ extension LocalWeatherCollectionViewCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("нажал на ячейку табл, отрыть экран одного дня")
         tableView.deselectRow(at: indexPath, animated: true)
         guard let weather = self.weather else {
             return

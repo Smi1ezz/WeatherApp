@@ -29,7 +29,6 @@ class SettingsViewController: UIViewController {
 
     private func setupSubviews() {
         [backgroundView, settingsView].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(item)
         }
         settingsView.setDoneButton(target: self, action: #selector(saveAndExit))

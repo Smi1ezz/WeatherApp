@@ -79,7 +79,6 @@ class EveryDayTableViewCell: UITableViewCell {
 
     private func setupSubviews() {
         [dateLabel, weatherImg, humidityLabel, descriptionLabel, tempLabel, arrowImg].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(item)
         }
     }

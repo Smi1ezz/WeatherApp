@@ -24,7 +24,6 @@ class DailySummaryViewController: UIViewController {
         dailySummaryTableView.register(DayTableViewCell.self, forCellReuseIdentifier: "NightTableViewCell")
         dailySummaryTableView.register(SunAndMoonTableViewCell.self, forCellReuseIdentifier: "SunAndMoonTableViewCell")
         dailySummaryTableView.register(PressureTableViewCell.self, forCellReuseIdentifier: "AirTableViewCell")
-        dailySummaryTableView.translatesAutoresizingMaskIntoConstraints = false
         dailySummaryTableView.showsVerticalScrollIndicator = false
         dailySummaryTableView.showsHorizontalScrollIndicator = false
         view.addSubview(dailySummaryTableView)
@@ -40,6 +39,18 @@ class DailySummaryViewController: UIViewController {
     func setWeather(_ weather: TestWeatherModelDaily) {
         self.weather = weather
     }
+
+    private func setMaskLayer(toCell cell: UITableViewCell) {
+        let verticalPadding: CGFloat = 12
+        let maskLayer = CALayer()
+        maskLayer.cornerRadius = 5
+        maskLayer.backgroundColor = UIColor.black.cgColor
+        maskLayer.frame = CGRect(x: cell.bounds.origin.x,
+                                 y: cell.bounds.origin.y,
+                                 width: cell.bounds.width,
+                                 height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
+        cell.layer.mask = maskLayer
+    }
 }
 
 extension DailySummaryViewController: UITableViewDataSource {
@@ -48,30 +59,10 @@ extension DailySummaryViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0: return 1
-        case 1: return 1
-        case 2: return 1
-        case 3: return 1
-        case 4: return 1
-        default: return 0
-        }
+        return 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        func setMaskLayer(toCell cell: UITableViewCell) {
-            let verticalPadding: CGFloat = 12
-            let maskLayer = CALayer()
-            maskLayer.cornerRadius = 5
-            maskLayer.backgroundColor = UIColor.black.cgColor
-            maskLayer.frame = CGRect(x: cell.bounds.origin.x,
-                                     y: cell.bounds.origin.y,
-                                     width: cell.bounds.width,
-                                     height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
-            cell.layer.mask = maskLayer
-        }
-
         guard let weather = weather else {
             return UITableViewCell()
         }

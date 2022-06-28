@@ -12,9 +12,7 @@ class MainViewController: UIViewController {
 
     private var router: RouterProtocol?
 
-    private var weatherStorageModel = WeatherInfoModel(netWorkManager: WeatherNetworkManager())
-
-    private var locationsList = [Int]()
+    private var weatherStorageModel: WeatherInfoModelProtocol?
 
     private let locationPages: CustomPageControl = {
         let locationPages = CustomPageControl(frame: .zero)
@@ -41,15 +39,18 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        weatherStorageModel.fetchWeather()
         self.router = Router(withNaviVC: self.navigationController!)
+        let networkManager = WeatherNetworkManager()
+        let weatherInfoModel = WeatherInfoModel(netWorkManager: networkManager)
+        self.weatherStorageModel = weatherInfoModel
+
         localWeatherCollectionView.register(LocalWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "LocalWeatherCollectionViewCell")
         localWeatherCollectionView.delegate = self
         localWeatherCollectionView.dataSource = self
 
-        weatherStorageModel.delegate = self
         locationPages.delegate = self
+
+        refrashAllData()
 
     }
 
@@ -57,13 +58,56 @@ class MainViewController: UIViewController {
         setupNavItem()
         setupSubviews()
         setupAddLocationButton()
-
     }
 
-    func refreshData(withNewCity location: Location) {
-        weatherStorageModel.addLocation(location)
-        weatherStorageModel.fetchWeather()
+    private func featchWeatherFromModel(aboutCity city: Localizable) {
+        guard let weatherStorageModel = self.weatherStorageModel else {
+            return
+        }
 
+        weatherStorageModel.fetchWeather(inCity: city) { [weak self] result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    print("localWeatherCollectionView перерисовывается")
+                    self?.localWeatherCollectionView.reloadData()
+                }
+            case .failure(let error):
+                print("ERROR in MAINVC \(error.localizedDescription)")
+            }
+        }
+    }
+
+    func refrashAllData() {
+        guard let weatherStorageModel = self.weatherStorageModel else {
+            return
+        }
+        guard weatherStorageModel.locations.isEmpty else {
+            for location in weatherStorageModel.locations {
+                self.featchWeatherFromModel(aboutCity: location)
+            }
+            return
+        }
+
+        weatherStorageModel.fetchFirstLocation { [weak self] firstLocation in
+            self?.featchWeatherFromModel(aboutCity: firstLocation)
+        }
+    }
+
+    func refrashDataOf(newLocation: Localizable) {
+        guard let location = newLocation as? Location else {
+            return
+        }
+        guard let weatherStorageModel = self.weatherStorageModel else {
+            return
+        }
+        weatherStorageModel.addLocation(location)
+
+        if weatherStorageModel.locations.count - weatherStorageModel.storage.count > 1 {
+            refrashAllData()
+        }
+
+        self.featchWeatherFromModel(aboutCity: location)
     }
 
     private func setupSubviews() {
@@ -71,7 +115,6 @@ class MainViewController: UIViewController {
         if userData.bool(forKey: UserDefaultsKeys.locationAvailible.rawValue) {
             [locationPages, localWeatherCollectionView].forEach { item in
                 view.addSubview(item)
-                item.translatesAutoresizingMaskIntoConstraints = false
             }
             setupConstraints()
         } else {
@@ -127,7 +170,6 @@ class MainViewController: UIViewController {
     func goToSettings() {
         // router show settings VC - функция настройки в разработке.
         // Сейчас это кнокпа сброса данных. Имитация первого запуска
-        //        router?.showSettingsVC()
 
         print("данные приложения сброшены. Имитация первого запуска")
         UserDefaults.standard.set(false, forKey: UserDefaultsKeys.onboardingCompleted.rawValue)
@@ -148,10 +190,14 @@ extension MainViewController: UICollectionViewDelegate {
 
 extension MainViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        let numberOfLocations = weatherStorageModel.locations.count
+        guard let weatherStorageModel = self.weatherStorageModel else {
+            return 1
+        }
 
-        locationPages.numberOfPages = numberOfLocations
-        return numberOfLocations
+        let numberOfModels = weatherStorageModel.storage.count
+
+        locationPages.numberOfPages = numberOfModels
+        return numberOfModels
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -161,6 +207,10 @@ extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LocalWeatherCollectionViewCell", for: indexPath) as! LocalWeatherCollectionViewCell
         cell.setCell(router: router ?? Router())
+
+        guard let weatherStorageModel = self.weatherStorageModel else {
+            return cell
+        }
 
         if !weatherStorageModel.storage.isEmpty {
             if !weatherStorageModel.storage[indexPath.section].isEmpty {
@@ -182,13 +232,6 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension MainViewController: WeatherInfoDelegate {
-    func refresh(model: WeatherInfoModelProtocol) {
-        self.weatherStorageModel = model as! WeatherInfoModel
-        localWeatherCollectionView.reloadData()
-    }
-}
-
 extension MainViewController: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         locationPages.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
@@ -202,10 +245,11 @@ extension MainViewController: UIScrollViewDelegate {
 
 extension MainViewController: PageControllDelegate {
     func changeNaviTitle() {
+        guard let weatherStorageModel = self.weatherStorageModel else {
+            return
+        }
+
         if !weatherStorageModel.storage.isEmpty {
-//            guard !weatherStorageModel.storage[locationPages.currentPage].isEmpty else {
-//                return
-//            }
             let localWeather = weatherStorageModel.storage[locationPages.currentPage][0]
             self.navigationItem.title = localWeather.timezone
         }
