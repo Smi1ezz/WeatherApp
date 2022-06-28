@@ -79,7 +79,7 @@ class Router: RouterProtocol {
 
                 print("Новый город: \(name)")
 
-                WeatherNetworkManager.shared.fetchLocationOfCity(named: name) { result in
+                WeatherNetworkManager.shared.fetchLocationOfCity(endpoint: .getLocation(cityName: name)) { result in
                     switch result {
                     case .success(let location):
                         guard !location.isEmpty, !location[0].response.geoObjectCollection.featureMember.isEmpty else {
