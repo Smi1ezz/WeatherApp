@@ -72,39 +72,39 @@ class Router: RouterProtocol {
                                         handler: { _ in
 
             if let name = alertVC.textFields?.first?.text {
-
                 guard !name.isEmpty else {
                     return
                 }
-
-                print("Новый город: \(name)")
-
-                WeatherNetworkManager.shared.fetchLocationOfCity(endpoint: .getLocation(cityName: name)) { result in
+                WeatherNetworkManager.shared.fetchDataModelType(endpoint: .getLocation(cityName: name), modelType: LocationModel.self) { result in
                     switch result {
                     case .success(let location):
-                        guard !location.isEmpty, !location[0].response.geoObjectCollection.featureMember.isEmpty else {
-                            return
+                        if let location = location as? [LocationModel] {
+                            guard !location.isEmpty, !location[0].response.geoObjectCollection.featureMember.isEmpty else {
+                                return
+                            }
+                            let locationString = location[0].response.geoObjectCollection.featureMember[0].geoObject.point.pos
+                            let lonAndLat = locationString.components(separatedBy: " ")
+                            let long = Float(lonAndLat[0]) ?? 0
+                            let lat = Float(lonAndLat[1]) ?? 0
+
+                            let loc = Location(latitude: lat, longitude: long)
+                            print("longitude \(loc.longitude), latitude \(loc.latitude)")
+
+                            let userData = UserDefaults.standard
+                            if !userData.bool(forKey: UserDefaultsKeys.locationAvailible.rawValue) {
+                                userData.set(true, forKey: UserDefaultsKeys.locationAvailible.rawValue)
+                            }
+                            mainVC.refrashDataOf(newLocation: loc)
+                            mainVC.viewWillAppear(true)
+                            alertVC.dismiss(animated: true, completion: nil)
+                        } else {
+                            print("SOME another Type in result")
                         }
-                        let locationString = location[0].response.geoObjectCollection.featureMember[0].geoObject.point.pos
-                        let lonAndLat = locationString.components(separatedBy: " ")
-                        let long = Float(lonAndLat[0]) ?? 0
-                        let lat = Float(lonAndLat[1]) ?? 0
-
-                        let loc = Location(latitude: lat, longitude: long)
-                        print("longitude \(loc.longitude), latitude \(loc.latitude)")
-
-                        let userData = UserDefaults.standard
-                        if !userData.bool(forKey: UserDefaultsKeys.locationAvailible.rawValue) {
-                            userData.set(true, forKey: UserDefaultsKeys.locationAvailible.rawValue)
-                        }
-                        mainVC.refrashDataOf(newLocation: loc)
-                        mainVC.viewWillAppear(true)
-                        alertVC.dismiss(animated: true, completion: nil)
-
                     case .failure(let error):
                         print("ERROR !!!  \(error.localizedDescription)")
                     }
                 }
+
             }
 
         }))

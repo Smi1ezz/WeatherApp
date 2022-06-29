@@ -8,18 +8,7 @@
 import Foundation
 
 protocol WeatherNetworkManagerProtocol {
-    func fetchData(endpoint: EndpointCases, complition: @escaping (ObtainWeatherResults) -> Void)
-    func fetchLocationOfCity(endpoint: EndpointCases, complition: @escaping (ObtainLocationResults) -> Void)
-}
-
-enum ObtainWeatherResults {
-    case success(weather: [TestWeatherModelDaily])
-    case failure(error: Error)
-}
-
-enum ObtainLocationResults {
-    case success(location: [LocationModel])
-    case failure(error: Error)
+    func fetchDataModelType<T: Codable>(endpoint: EndpointCases, modelType: T.Type, complition: @escaping (ObtainResults) -> Void)
 }
 
 enum ObtainResults {
@@ -34,50 +23,14 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
 
     static let shared = WeatherNetworkManager()
 
-    func fetchData(endpoint: EndpointCases, complition: @escaping (ObtainWeatherResults) -> Void) {
-
-        guard let safeURL = endpoint.URL else {
-            return
-        }
-
-        session.dataTask(with: safeURL) { [weak self] data, _, error in
-            var result: ObtainWeatherResults
-
-            defer {
-                DispatchQueue.main.async {
-                    complition(result)
-                }
-            }
-
-            guard let strongSelf = self else {
-                let error = NSError(domain: "NeteorkManager", code: 412, userInfo: ["Error. Session.dataTask has no owner": ""])
-                result = .failure(error: error)
-                return
-            }
-
-            if error == nil, let parsData = data {
-                do {
-                    let weather = try strongSelf.decoder.decode(TestWeatherModelDaily.self, from: parsData)
-                    print("Модель TestWeatherModelDaily успешно спарсилась")
-                    result = .success(weather: [weather])
-                } catch {
-                    result = .failure(error: error)
-                }
-            } else {
-                result = .failure(error: error!)
-            }
-        }
-        .resume()
-    }
-
-    func fetchLocationOfCity(endpoint: EndpointCases, complition: @escaping (ObtainLocationResults) -> Void) {
+    func fetchDataModelType<T: Codable>(endpoint: EndpointCases, modelType: T.Type, complition: @escaping (ObtainResults) -> Void) {
 
         guard let url = endpoint.URL else {
             return
         }
 
         session.dataTask(with: url) { [weak self] data, _, error in
-            var result: ObtainLocationResults
+            var result: ObtainResults
 
             defer {
                 DispatchQueue.main.async {
@@ -93,9 +46,9 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
 
             if error == nil, let parsData = data {
                 do {
-                    let location = try strongSelf.decoder.decode(LocationModel.self, from: parsData)
+                    let resultOfRequest = try strongSelf.decoder.decode(modelType.self, from: parsData)
                     print("Модель LocationModel успешно спарсилась")
-                    result = .success(location: [location])
+                    result = .success(result: [resultOfRequest])
                 } catch {
                     result = .failure(error: error)
                 }
@@ -105,4 +58,5 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
         }
         .resume()
     }
+
 }

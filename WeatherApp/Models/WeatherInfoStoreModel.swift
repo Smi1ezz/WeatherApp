@@ -50,14 +50,18 @@ class WeatherInfoModel: WeatherInfoModelProtocol {
 
     func fetchWeather(inCity city: Localizable, complition: @escaping (Swift.Result<[TestWeatherModelDaily], Error>) -> Void) {
 
-        netWorkManager.fetchData(endpoint: .getData(fromLocation: city)) { [weak self] result in
+        netWorkManager.fetchDataModelType(endpoint: .getData(fromLocation: city), modelType: TestWeatherModelDaily.self) { [weak self] result in
             switch result {
             case .success(let weather):
-                guard !weather.isEmpty else {
-                    return
+                if let weather = weather as? [TestWeatherModelDaily] {
+                    guard !weather.isEmpty else {
+                        return
+                    }
+                    self?.storage.append(weather)
+                    complition(.success(weather))
+                } else {
+                    print("SOME another Type in result")
                 }
-                self?.storage.append(weather)
-                complition(.success(weather))
             case .failure(let error):
                 complition(.failure(error))
             }
