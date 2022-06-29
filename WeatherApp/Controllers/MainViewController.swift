@@ -47,11 +47,8 @@ class MainViewController: UIViewController {
         localWeatherCollectionView.register(LocalWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "LocalWeatherCollectionViewCell")
         localWeatherCollectionView.delegate = self
         localWeatherCollectionView.dataSource = self
-
         locationPages.delegate = self
-
         refrashAllData()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -73,7 +70,7 @@ class MainViewController: UIViewController {
                     self?.localWeatherCollectionView.reloadData()
                 }
             case .failure(let error):
-                print("ERROR in MAINVC \(error.localizedDescription)")
+                print("ERROR \(error.localizedDescription)")
             }
         }
     }
@@ -102,10 +99,6 @@ class MainViewController: UIViewController {
             return
         }
         weatherStorageModel.addLocation(location)
-
-        if weatherStorageModel.locations.count - weatherStorageModel.storage.count > 1 {
-            refrashAllData()
-        }
 
         self.featchWeatherFromModel(aboutCity: location)
     }

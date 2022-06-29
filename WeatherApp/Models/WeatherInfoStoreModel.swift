@@ -59,7 +59,6 @@ class WeatherInfoModel: WeatherInfoModelProtocol {
                 self?.storage.append(weather)
                 complition(.success(weather))
             case .failure(let error):
-                print("Error \(error.localizedDescription)")
                 complition(.failure(error))
             }
         }

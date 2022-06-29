@@ -22,6 +22,11 @@ enum ObtainLocationResults {
     case failure(error: Error)
 }
 
+enum ObtainResults {
+    case success(result: [Codable])
+    case failure(error: Error)
+}
+
 class WeatherNetworkManager: WeatherNetworkManagerProtocol {
     private let sessionConfiguration = URLSessionConfiguration.default
     private let session = URLSession.shared
@@ -45,22 +50,21 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
             }
 
             guard let strongSelf = self else {
-                result = .success(weather: [])
-                print("\(String(describing: error?.localizedDescription))")
+                let error = NSError(domain: "NeteorkManager", code: 412, userInfo: ["Error. Session.dataTask has no owner": ""])
+                result = .failure(error: error)
                 return
             }
 
             if error == nil, let parsData = data {
-                guard let weather = try? strongSelf.decoder.decode(TestWeatherModelDaily.self, from: parsData) else {
-                    print("Модель TestWeatherModelDaily не спарсилась. Будет пустой массив.Но получил data \(parsData)")
-                    result = .success(weather: [])
-                    return
+                do {
+                    let weather = try strongSelf.decoder.decode(TestWeatherModelDaily.self, from: parsData)
+                    print("Модель TestWeatherModelDaily успешно спарсилась")
+                    result = .success(weather: [weather])
+                } catch {
+                    result = .failure(error: error)
                 }
-                print("Модель TestWeatherModelDaily успешно спарсилась")
-                result = .success(weather: [weather])
             } else {
                 result = .failure(error: error!)
-                print("\(String(describing: error?.localizedDescription))")
             }
         }
         .resume()
@@ -82,25 +86,23 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
             }
 
             guard let strongSelf = self else {
-                result = .success(location: [])
-                print("ERROR \(String(describing: error?.localizedDescription))")
+                let error = NSError(domain: "NeteorkManager", code: 412, userInfo: ["Error. Session.dataTask has no owner": ""])
+                result = .failure(error: error)
                 return
             }
 
             if error == nil, let parsData = data {
-                guard let location = try? strongSelf.decoder.decode(LocationModel.self, from: parsData) else {
-                    print("Модель LocationModel не спарсилась. Будет пустой массив. Но получил data \(parsData)")
-                    result = .success(location: [])
-                    return
+                do {
+                    let location = try strongSelf.decoder.decode(LocationModel.self, from: parsData)
+                    print("Модель LocationModel успешно спарсилась")
+                    result = .success(location: [location])
+                } catch {
+                    result = .failure(error: error)
                 }
-                print("Модель LocationModel успешно спарсилась")
-                result = .success(location: [location])
             } else {
                 result = .failure(error: error!)
-                print("ERROR \(String(describing: error?.localizedDescription))")
             }
         }
         .resume()
     }
-
 }

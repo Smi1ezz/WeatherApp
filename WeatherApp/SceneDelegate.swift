@@ -11,7 +11,6 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    var firstShowedVC: UIViewController?
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -22,6 +21,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let router: RouterProtocol = Router()
 
         self.window = router.makeWinWithStartVC(fromWindow: window)
+
+    }
+
+    func sceneDidDisconnect(_ scene: UIScene) {
 
     }
 
