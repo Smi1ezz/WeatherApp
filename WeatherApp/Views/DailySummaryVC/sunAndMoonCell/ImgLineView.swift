@@ -34,7 +34,6 @@ class ImgLineView: UIView {
 
     private func setupSubviews() {
         [weatherImg, valueLabel].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(item)
         }
         setupConstraints()

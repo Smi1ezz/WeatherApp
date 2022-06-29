@@ -39,7 +39,6 @@ class CenterViewForDailyVC: UIView {
 
     private func setupSubviews() {
         [weatherImg, descriptionLabel, temperatureLabel].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(item)
         }
         setupConstraints()

@@ -61,7 +61,6 @@ class PressureTableViewCell: UITableViewCell {
 
     private func setupSubviews() {
         [titleLabel, scoreLabel, scoreDescriptionButton, descriptionLabel].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(item)
         }
         setupConstraints()

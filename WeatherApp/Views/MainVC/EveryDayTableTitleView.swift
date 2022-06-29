@@ -41,9 +41,7 @@ class EveryDayTableTitleView: UIView {
     private func setupSubviews() {
         [titleLabel, howMuchDaysButton].forEach { item in
             self.addSubview(item)
-            item.translatesAutoresizingMaskIntoConstraints = false
         }
-        self.translatesAutoresizingMaskIntoConstraints = false
         setupConstraints()
     }
 

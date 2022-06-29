@@ -155,7 +155,6 @@ class SettingsView: UIView {
 
     private func setupSubviews() {
         [titleLabel, temperatureLineView, windSpeedLineView, timeFormatLineView, notificationLineView, doneButton].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(item)
         }
         setupConstraints()

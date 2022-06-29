@@ -15,7 +15,6 @@ class SunAndMoonTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        sunAndMoonView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(sunAndMoonView)
         setupConstraints()
     }

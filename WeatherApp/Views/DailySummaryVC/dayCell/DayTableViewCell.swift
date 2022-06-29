@@ -55,7 +55,6 @@ class DayTableViewCell: UITableViewCell {
 
     private func setupSubviews() {
         [titleLabel, centerView, senseLineView, windLineView, ufLineView, rainFallView, cloudyView].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(item)
         }
         [senseLineView, windLineView, ufLineView, rainFallView, cloudyView].forEach { item in

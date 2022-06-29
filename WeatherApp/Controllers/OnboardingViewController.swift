@@ -10,7 +10,18 @@ import SnapKit
 
 class OnboardingViewController: UIViewController {
 
+    private let router: RouterProtocol
+
     private let scrollView = OnboardingView()
+
+    init(router: RouterProtocol) {
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewWillLayoutSubviews() {
         view.backgroundColor = .blue
@@ -41,7 +52,7 @@ class OnboardingViewController: UIViewController {
         let userData = UserDefaults.standard
         userData.set(true, forKey: UserDefaultsKeys.onboardingCompleted.rawValue)
         userData.set(true, forKey: UserDefaultsKeys.locationAvailible.rawValue)
-        performSegue(withIdentifier: "showMainVC", sender: nil)
+        router.showMainVC()
     }
 
     @objc
@@ -49,7 +60,7 @@ class OnboardingViewController: UIViewController {
         let userData = UserDefaults.standard
         userData.set(true, forKey: UserDefaultsKeys.onboardingCompleted.rawValue)
         userData.set(false, forKey: UserDefaultsKeys.locationAvailible.rawValue)
-        performSegue(withIdentifier: "showMainVC", sender: nil)
+        router.showMainVC()
     }
 
 }

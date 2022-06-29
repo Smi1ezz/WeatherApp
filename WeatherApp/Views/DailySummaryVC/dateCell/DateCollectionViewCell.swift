@@ -30,7 +30,6 @@ class DateCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.textColor = UIColor.black
         contentView.addSubview(dateLabel)
         contentView.layer.cornerRadius = 5
