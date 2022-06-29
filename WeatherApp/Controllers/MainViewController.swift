@@ -65,13 +65,13 @@ class MainViewController: UIViewController {
     func refrashAllData() {
         guard weatherStorageModel.locations.isEmpty else {
             for location in weatherStorageModel.locations {
-                self.featchWeatherFromModel(aboutCity: location)
+                self.fetchWeatherFromModel(aboutCity: location)
             }
             return
         }
 
         weatherStorageModel.fetchFirstLocation { [weak self] firstLocation in
-            self?.featchWeatherFromModel(aboutCity: firstLocation)
+            self?.fetchWeatherFromModel(aboutCity: firstLocation)
         }
     }
 
@@ -81,7 +81,7 @@ class MainViewController: UIViewController {
         }
         weatherStorageModel.addLocation(location)
 
-        self.featchWeatherFromModel(aboutCity: location)
+        self.fetchWeatherFromModel(aboutCity: location)
     }
 
     func correctLocationsInModes() {
@@ -94,7 +94,7 @@ class MainViewController: UIViewController {
         }
     }
 
-    private func featchWeatherFromModel(aboutCity city: Localizable) {
+    private func fetchWeatherFromModel(aboutCity city: Localizable) {
         weatherStorageModel.fetchWeather(inCity: city) { [weak self] result in
             switch result {
             case .success:

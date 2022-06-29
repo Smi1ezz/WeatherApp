@@ -92,7 +92,6 @@ class Router: RouterProtocol {
                                 userData.set(true, forKey: UserDefaultsKeys.locationAvailible.rawValue)
                             }
                             mainVC.refrashDataOf(newLocation: loc)
-                            mainVC.viewWillAppear(true)
                             alertVC.dismiss(animated: true, completion: nil)
                         } else {
                             print("SOME another Type in result")
