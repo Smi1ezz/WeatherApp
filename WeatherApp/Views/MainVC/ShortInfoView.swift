@@ -87,7 +87,6 @@ class ShortInfoView: UIView {
 
     private func setupSubviews() {
         [dayNightImg, dateLabel, tempImg, windImg, temperatureLabel, windLabel, descriptionLabel].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(item)
         }
 

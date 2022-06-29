@@ -38,7 +38,6 @@ class LineViewForSettings: UIView {
 
     private func setupSubviews() {
         [descriptionLabel, toggleView].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(item)
         }
         setupConstraints()

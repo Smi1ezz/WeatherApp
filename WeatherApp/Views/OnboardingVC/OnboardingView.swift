@@ -88,7 +88,6 @@ class OnboardingView: UIScrollView {
     private func setupSubviews() {
         [pocketLabel, umbrellaLabel, smallDescriptionLabel, bigDescriptionLabel, agreeButton, disagreeButton, onboardingImg].forEach { item in
             self.addSubview(item)
-            item.translatesAutoresizingMaskIntoConstraints = false
         }
 
         setupAgreeButton()

@@ -33,7 +33,6 @@ class DateTableViewCell: UITableViewCell {
         dateCollectionView.delegate = self
         dateCollectionView.dataSource = self
         dateCollectionView.register(DateCollectionViewCell.self, forCellWithReuseIdentifier: "DateCollectionViewCell")
-        dateCollectionView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(dateCollectionView)
         setupConstraints()
 

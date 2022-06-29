@@ -87,7 +87,6 @@ class TwentyFourHoursTableViewCell: UITableViewCell {
 
     private func setupSubviews() {
         [dateLabel, timeLabel, temperatureLabel, senseLineView, windLineView, rainFallView, cloudyView].forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(item)
         }
         setupConstraints()
