@@ -10,9 +10,9 @@ import SnapKit
 
 class MainViewController: UIViewController {
 
-    private var router: RouterProtocol?
+    private var router: RouterProtocol
 
-    private var weatherStorageModel: WeatherInfoModelProtocol?
+    private var weatherStorageModel: WeatherInfoModelProtocol
 
     private let locationPages: CustomPageControl = {
         let locationPages = CustomPageControl(frame: .zero)
@@ -37,13 +37,18 @@ class MainViewController: UIViewController {
         return localWeatherCollectionView
     }()
 
+    init(router: RouterProtocol, model: WeatherInfoModelProtocol) {
+        self.weatherStorageModel = model
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.router = Router(withNaviVC: self.navigationController!)
-        let networkManager = WeatherNetworkManager()
-        let weatherInfoModel = WeatherInfoModel(netWorkManager: networkManager)
-        self.weatherStorageModel = weatherInfoModel
-
         localWeatherCollectionView.register(LocalWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "LocalWeatherCollectionViewCell")
         localWeatherCollectionView.delegate = self
         localWeatherCollectionView.dataSource = self
@@ -57,28 +62,7 @@ class MainViewController: UIViewController {
         setupAddLocationButton()
     }
 
-    private func featchWeatherFromModel(aboutCity city: Localizable) {
-        guard let weatherStorageModel = self.weatherStorageModel else {
-            return
-        }
-
-        weatherStorageModel.fetchWeather(inCity: city) { [weak self] result in
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
-                    print("localWeatherCollectionView перерисовывается")
-                    self?.localWeatherCollectionView.reloadData()
-                }
-            case .failure(let error):
-                print("ERROR \(error.localizedDescription)")
-            }
-        }
-    }
-
     func refrashAllData() {
-        guard let weatherStorageModel = self.weatherStorageModel else {
-            return
-        }
         guard weatherStorageModel.locations.isEmpty else {
             for location in weatherStorageModel.locations {
                 self.featchWeatherFromModel(aboutCity: location)
@@ -95,12 +79,33 @@ class MainViewController: UIViewController {
         guard let location = newLocation as? Location else {
             return
         }
-        guard let weatherStorageModel = self.weatherStorageModel else {
-            return
-        }
         weatherStorageModel.addLocation(location)
 
         self.featchWeatherFromModel(aboutCity: location)
+    }
+
+    func correctLocationsInModes() {
+        weatherStorageModel.locations = []
+        for item in weatherStorageModel.storage {
+            let lon = item[0].longitude
+            let lat = item[0].latitude
+            let location = Location(latitude: lat, longitude: lon)
+            weatherStorageModel.addLocation(location)
+        }
+    }
+
+    private func featchWeatherFromModel(aboutCity city: Localizable) {
+        weatherStorageModel.fetchWeather(inCity: city) { [weak self] result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    print("localWeatherCollectionView перерисовывается")
+                    self?.localWeatherCollectionView.reloadData()
+                }
+            case .failure(let error):
+                print("ERROR \(error.localizedDescription)")
+            }
+        }
     }
 
     private func setupSubviews() {
@@ -173,7 +178,7 @@ class MainViewController: UIViewController {
 
     @objc
     func goToAddLocation() {
-        router?.showAddCityAlertVC(onMainVC: self)
+        router.showAddCityAlertVC(onMainVC: self)
     }
 }
 
@@ -183,10 +188,6 @@ extension MainViewController: UICollectionViewDelegate {
 
 extension MainViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        guard let weatherStorageModel = self.weatherStorageModel else {
-            return 1
-        }
-
         let numberOfModels = weatherStorageModel.storage.count
 
         locationPages.numberOfPages = numberOfModels
@@ -199,11 +200,7 @@ extension MainViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LocalWeatherCollectionViewCell", for: indexPath) as! LocalWeatherCollectionViewCell
-        cell.setCell(router: router ?? Router())
-
-        guard let weatherStorageModel = self.weatherStorageModel else {
-            return cell
-        }
+        cell.setCell(router: router)
 
         if !weatherStorageModel.storage.isEmpty {
             if !weatherStorageModel.storage[indexPath.section].isEmpty {
@@ -238,10 +235,6 @@ extension MainViewController: UIScrollViewDelegate {
 
 extension MainViewController: PageControllDelegate {
     func changeNaviTitle() {
-        guard let weatherStorageModel = self.weatherStorageModel else {
-            return
-        }
-
         if !weatherStorageModel.storage.isEmpty {
             let localWeather = weatherStorageModel.storage[locationPages.currentPage][0]
             self.navigationItem.title = localWeather.timezone

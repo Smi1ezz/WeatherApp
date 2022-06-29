@@ -9,53 +9,50 @@ import Foundation
 import UIKit
 
 protocol RouterProtocol: AnyObject {
-    func makeWinWithStartVC(fromWindow window: UIWindow) -> UIWindow
+    func showMainVC()
     func showSettingsVC()
     func showDailySummaryVC(withWeather weather: TestWeatherModelDaily, selectedIndex: Int)
     func showTwentyFourHoursVC(withWeather weather: TestWeatherModelDaily)
     func showAddCityAlertVC(onMainVC: MainViewController)
+    func showOnboardingVC()
 }
 
 class Router: RouterProtocol {
-    private var naviVC: UINavigationController?
+    private var naviVC: UINavigationController
 
-    convenience init(withNaviVC naviVC: UINavigationController) {
-        self.init()
+    init(withNaviVC naviVC: UINavigationController) {
         self.naviVC = naviVC
     }
 
-    func makeWinWithStartVC(fromWindow window: UIWindow) -> UIWindow {
-        var firstShowedVC: UIViewController?
-        let userData = UserDefaults.standard
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    func showOnboardingVC() {
+        naviVC.isNavigationBarHidden = true
+        let onboardingVC = OnboardingViewController(router: self)
+        naviVC.pushViewController(onboardingVC, animated: true)
+    }
 
-        if userData.bool(forKey: UserDefaultsKeys.onboardingCompleted.rawValue) {
-            firstShowedVC = storyboard.instantiateViewController(withIdentifier: "MainViewController")
-        } else {
-            firstShowedVC = storyboard.instantiateViewController(withIdentifier: "Onboarding")
-        }
-
-        window.rootViewController = firstShowedVC
-        window.backgroundColor = .white
-        window.makeKeyAndVisible()
-        return window
+    func showMainVC() {
+        naviVC.isNavigationBarHidden = false
+        let networkManager = WeatherNetworkManager()
+        let weatherInfoModel = WeatherInfoModel(netWorkManager: networkManager)
+        let mainVC = MainViewController(router: self, model: weatherInfoModel)
+        naviVC.pushViewController(mainVC, animated: true)
     }
 
     func showSettingsVC() {
-        naviVC?.pushViewController(SettingsViewController(), animated: true)
+        naviVC.pushViewController(SettingsViewController(), animated: true)
     }
 
     func showDailySummaryVC(withWeather weather: TestWeatherModelDaily, selectedIndex: Int) {
         let viewController = DailySummaryViewController()
         viewController.setWeather(weather)
         viewController.selectedDateIndex = selectedIndex
-        naviVC?.pushViewController(viewController, animated: true)
+        naviVC.pushViewController(viewController, animated: true)
     }
 
     func showTwentyFourHoursVC(withWeather weather: TestWeatherModelDaily) {
         let viewController = TwentyFourHoursViewController()
         viewController.setWeather(weather)
-        naviVC?.pushViewController(viewController, animated: true)
+        naviVC.pushViewController(viewController, animated: true)
     }
 
     func showAddCityAlertVC(onMainVC mainVC: MainViewController) {

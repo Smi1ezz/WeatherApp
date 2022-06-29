@@ -18,10 +18,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let winScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: winScene)
-        let router: RouterProtocol = Router()
+        let navigationController = UINavigationController()
+        let router: RouterProtocol = Router(withNaviVC: navigationController)
+        let userData = UserDefaults.standard
 
-        self.window = router.makeWinWithStartVC(fromWindow: window)
+        window.rootViewController = navigationController
+        window.backgroundColor = .white
+        window.makeKeyAndVisible()
+        self.window = window
 
+        if userData.bool(forKey: UserDefaultsKeys.onboardingCompleted.rawValue) {
+            router.showMainVC()
+        } else {
+            router.showOnboardingVC()
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
