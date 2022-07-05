@@ -10,7 +10,7 @@ import Foundation
 
 // swiftlint:disable identifier_name
 
-class TestWeatherModelDaily: Codable {
+struct WeatherModelDaily: Codable {
     /// Geographical coordinates of the location (latitude)
     let latitude: Float
     /// Geographical coordinates of the location (longitude)
@@ -20,15 +20,15 @@ class TestWeatherModelDaily: Codable {
     /// Shift in seconds from UTC
     let timezoneOffset: Int
     /// Current weather data API response
-    let currentWeather: TestCurrentWeatherModel
+    let currentWeather: CurrentWeatherModel
     /// Minute forecast weather data API response
-    let minutelyWeather: [TestMinutelyWeatherModel]
+    let minutelyWeather: [MinutelyWeatherModel]
     /// Hourly forecast weather data API response
-    let hourlyWeather: [TestHourlyWeatherModel]
+    let hourlyWeather: [HourlyWeatherModel]
     /// Daily forecast weather data API response
-    let dailyWeather: [TestDailyWeatherModel]
+    let dailyWeather: [DailyWeatherModel]
     /// National weather alerts data from major national weather warning systems
-    let alerts: [TestAlertModel]?
+    let alerts: [AlertModel]?
 
     enum CodingKeys: String, CodingKey {
         case latitude = "lat"
@@ -43,7 +43,7 @@ class TestWeatherModelDaily: Codable {
     }
 }
 
-class TestCurrentWeatherModel: Codable {
+struct CurrentWeatherModel: Codable {
     /// Current time, Unix, UTC
     let dt: Int
     /// Sunrise time, Unix, UTC
@@ -103,14 +103,14 @@ class TestCurrentWeatherModel: Codable {
     }
 }
 
-class TestMinutelyWeatherModel: Codable {
+struct MinutelyWeatherModel: Codable {
     /// Time of the forecasted data, unix, UTC
     let dt: Int
     /// Precipitation volume, mm
     let precipitation: Float
 }
 
-class TestHourlyWeatherModel: Codable {
+struct HourlyWeatherModel: Codable {
     /// Current time, Unix, UTC
     let dt: Int
     /// Temperature. Units - default: kelvin, metric: Celsius, imperial: Fahrenheit.
@@ -165,7 +165,7 @@ class TestHourlyWeatherModel: Codable {
     }
 }
 
-class TestDailyWeatherModel: Codable {
+struct DailyWeatherModel: Codable {
     /// Current time, Unix, UTC
     let dt: Int
     /// Sunrise time, Unix, UTC
@@ -226,7 +226,7 @@ class TestDailyWeatherModel: Codable {
     }
 }
 
-class DailyTempModel: Codable {
+struct DailyTempModel: Codable {
     let morn: Float?
     let day: Float?
     let eve: Float?
@@ -235,14 +235,14 @@ class DailyTempModel: Codable {
     let max: Float?
 }
 
-class DailyFeelsLikeModel: Codable {
+struct DailyFeelsLikeModel: Codable {
     let morn: Float?
     let day: Float?
     let eve: Float?
     let nigth: Float?
 }
 
-class TestAlertModel: Codable {
+struct AlertModel: Codable {
     /// Name of the alert source
     let senderName: String
     /// Alert event name
@@ -267,7 +267,7 @@ class TestAlertModel: Codable {
 }
 
 // MARK: общие вложенности для разных моделей
-class WeatherModel: Codable {
+struct WeatherModel: Codable {
     /// Weather condition id
     let id: Int
     /// Group of weather parameters (Rain, Snow, Extreme etc.)
@@ -278,7 +278,7 @@ class WeatherModel: Codable {
     let icon: String
 }
 
-class RainForHour: Codable {
+struct RainForHour: Codable {
     let oneHour: Float?
 
     enum Codingkeys: String, CodingKey {
@@ -286,7 +286,7 @@ class RainForHour: Codable {
     }
 }
 
-class SnowForHour: Codable {
+struct SnowForHour: Codable {
     let oneHour: Float?
 
     enum CodingKeys: String, CodingKey {

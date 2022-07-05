@@ -43,7 +43,7 @@ class SunView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupViewWith(weather: TestDailyWeatherModel) {
+    func setupViewWith(weather: DailyWeatherModel) {
         sunDawnTextLine.valueLabel.text = GlobalAppFormatter.shared.formateDate(fromUNIX: weather.sunrise, to: .onlyTime24)
         sunDuskTextLine.valueLabel.text = GlobalAppFormatter.shared.formateDate(fromUNIX: weather.sunset, to: .onlyTime24)
         sunDuskTextLine.descriptionLabel.text = "Закат"

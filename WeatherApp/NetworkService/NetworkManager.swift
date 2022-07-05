@@ -17,7 +17,6 @@ enum ObtainResults {
 }
 
 class WeatherNetworkManager: WeatherNetworkManagerProtocol {
-    private let sessionConfiguration = URLSessionConfiguration.default
     private let session = URLSession.shared
     private let decoder = JSONDecoder()
 
@@ -47,7 +46,7 @@ class WeatherNetworkManager: WeatherNetworkManagerProtocol {
             if error == nil, let parsData = data {
                 do {
                     let resultOfRequest = try strongSelf.decoder.decode(modelType.self, from: parsData)
-                    print("Модель LocationModel успешно спарсилась")
+                    print("Получена модель \(modelType)")
                     result = .success(result: [resultOfRequest])
                 } catch {
                     result = .failure(error: error)

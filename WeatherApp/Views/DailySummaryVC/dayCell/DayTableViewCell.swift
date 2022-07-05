@@ -13,7 +13,7 @@ class DayTableViewCell: UITableViewCell {
         case day, night
     }
 
-    private weak var weather: TestDailyWeatherModel?
+    private var weather: DailyWeatherModel?
 
     private var state: State = .day
 
@@ -75,7 +75,7 @@ class DayTableViewCell: UITableViewCell {
         setupSubviews()
     }
 
-    func setWeather(model weather: TestDailyWeatherModel) {
+    func setWeather(model weather: DailyWeatherModel) {
         self.weather = weather
     }
 

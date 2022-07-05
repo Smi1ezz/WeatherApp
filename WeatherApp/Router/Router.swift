@@ -11,8 +11,8 @@ import UIKit
 protocol RouterProtocol: AnyObject {
     func showMainVC()
     func showSettingsVC()
-    func showDailySummaryVC(withWeather weather: TestWeatherModelDaily, selectedIndex: Int)
-    func showTwentyFourHoursVC(withWeather weather: TestWeatherModelDaily)
+    func showDailySummaryVC(withWeather weather: WeatherModelDaily, selectedIndex: Int)
+    func showTwentyFourHoursVC(withWeather weather: WeatherModelDaily)
     func showAddCityAlertVC(onMainVC: MainViewController)
     func showOnboardingVC()
 }
@@ -42,14 +42,14 @@ class Router: RouterProtocol {
         naviVC.pushViewController(SettingsViewController(), animated: true)
     }
 
-    func showDailySummaryVC(withWeather weather: TestWeatherModelDaily, selectedIndex: Int) {
+    func showDailySummaryVC(withWeather weather: WeatherModelDaily, selectedIndex: Int) {
         let viewController = DailySummaryViewController()
         viewController.setWeather(weather)
         viewController.selectedDateIndex = selectedIndex
         naviVC.pushViewController(viewController, animated: true)
     }
 
-    func showTwentyFourHoursVC(withWeather weather: TestWeatherModelDaily) {
+    func showTwentyFourHoursVC(withWeather weather: WeatherModelDaily) {
         let viewController = TwentyFourHoursViewController()
         viewController.setWeather(weather)
         naviVC.pushViewController(viewController, animated: true)

@@ -10,10 +10,10 @@ import UIKit
 import CoreLocation
 
 protocol WeatherInfoModelProtocol {
-    var storage: [[TestWeatherModelDaily]] {get}
+    var storage: [[WeatherModelDaily]] {get}
     var locations: [Location] {get set}
 
-    func fetchWeather(inCity city: Localizable, complition: @escaping (Swift.Result<[TestWeatherModelDaily], Error>) -> Void)
+    func fetchWeather(inCity city: Localizable, complition: @escaping (Swift.Result<[WeatherModelDaily], Error>) -> Void)
     func fetchFirstLocation(complition: @escaping (Localizable) -> Void)
     func addLocation(_ location: Location)
 }
@@ -42,18 +42,18 @@ class WeatherInfoModel: WeatherInfoModelProtocol {
         print("USERDATA LOCATIONS count \(lctns.count)")
         return lctns
     }()
-    var storage = [[TestWeatherModelDaily]]()
+    var storage = [[WeatherModelDaily]]()
 
     init(netWorkManager: WeatherNetworkManagerProtocol) {
         self.netWorkManager = netWorkManager
     }
 
-    func fetchWeather(inCity city: Localizable, complition: @escaping (Swift.Result<[TestWeatherModelDaily], Error>) -> Void) {
+    func fetchWeather(inCity city: Localizable, complition: @escaping (Swift.Result<[WeatherModelDaily], Error>) -> Void) {
 
-        netWorkManager.fetchDataModelType(endpoint: .getData(fromLocation: city), modelType: TestWeatherModelDaily.self) { [weak self] result in
+        netWorkManager.fetchDataModelType(endpoint: .getData(fromLocation: city), modelType: WeatherModelDaily.self) { [weak self] result in
             switch result {
             case .success(let weather):
-                if let weather = weather as? [TestWeatherModelDaily] {
+                if let weather = weather as? [WeatherModelDaily] {
                     guard !weather.isEmpty else {
                         return
                     }

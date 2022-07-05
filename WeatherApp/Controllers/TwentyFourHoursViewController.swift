@@ -9,9 +9,9 @@ import UIKit
 
 class TwentyFourHoursViewController: UIViewController {
 
-    private weak var weather: TestWeatherModelDaily?
+    private var weather: WeatherModelDaily?
 
-    private var everyThreeHourWeather = [TestHourlyWeatherModel]()
+    private var everyThreeHourWeather = [HourlyWeatherModel]()
 
     private let twentyFourTableView = UITableView(frame: .zero, style: .plain)
 
@@ -24,7 +24,7 @@ class TwentyFourHoursViewController: UIViewController {
         setupConstraints()
     }
 
-    func setWeather(_ weather: TestWeatherModelDaily) {
+    func setWeather(_ weather: WeatherModelDaily) {
         self.weather = weather
 
         var hoursCounter = 0

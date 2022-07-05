@@ -68,7 +68,7 @@ class ShortInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupWithInfo(about weather: TestWeatherModelDaily) {
+    func setupWithInfo(about weather: WeatherModelDaily) {
         setupSubviews()
 
         dayNightImg.image = {

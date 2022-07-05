@@ -8,12 +8,12 @@
 
 import Foundation
 
-class LocationModel: Codable {
+struct LocationModel: Codable {
     let response: GeoObjectCollectionModel
 
 }
 
-class GeoObjectCollectionModel: Codable {
+struct GeoObjectCollectionModel: Codable {
     let geoObjectCollection: FeatureMemberModel
 
     enum CodingKeys: String, CodingKey {
@@ -21,11 +21,11 @@ class GeoObjectCollectionModel: Codable {
     }
 }
 
-class FeatureMemberModel: Codable {
+struct FeatureMemberModel: Codable {
     let featureMember: [GeoObjectModel]
 }
 
-class GeoObjectModel: Codable {
+struct GeoObjectModel: Codable {
     let geoObject: PointModel
 
     enum CodingKeys: String, CodingKey {
@@ -33,7 +33,7 @@ class GeoObjectModel: Codable {
     }
 }
 
-class PointModel: Codable {
+struct PointModel: Codable {
     let point: PositionModel
 
     enum CodingKeys: String, CodingKey {
@@ -41,6 +41,6 @@ class PointModel: Codable {
     }
 }
 
-class PositionModel: Codable {
+struct PositionModel: Codable {
     let pos: String
 }

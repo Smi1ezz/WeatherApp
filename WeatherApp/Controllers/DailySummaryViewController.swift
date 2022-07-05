@@ -11,7 +11,7 @@ class DailySummaryViewController: UIViewController {
 
     var selectedDateIndex: Int = 0
 
-    private weak var weather: TestWeatherModelDaily?
+    private var weather: WeatherModelDaily?
 
     private let dailySummaryTableView = UITableView(frame: .zero, style: .plain)
 
@@ -36,7 +36,7 @@ class DailySummaryViewController: UIViewController {
         }
     }
 
-    func setWeather(_ weather: TestWeatherModelDaily) {
+    func setWeather(_ weather: WeatherModelDaily) {
         self.weather = weather
     }
 

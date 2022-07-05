@@ -99,7 +99,6 @@ class MainViewController: UIViewController {
             switch result {
             case .success:
                 DispatchQueue.main.async {
-                    print("localWeatherCollectionView перерисовывается")
                     self?.localWeatherCollectionView.reloadData()
                 }
             case .failure(let error):

@@ -9,7 +9,7 @@ import UIKit
 
 class PressureTableViewCell: UITableViewCell {
 
-    private weak var weather: TestDailyWeatherModel?
+    private var weather: DailyWeatherModel?
 
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -66,7 +66,7 @@ class PressureTableViewCell: UITableViewCell {
         setupConstraints()
     }
 
-    func setWeather(model weather: TestDailyWeatherModel) {
+    func setWeather(model weather: DailyWeatherModel) {
         self.weather = weather
     }
 

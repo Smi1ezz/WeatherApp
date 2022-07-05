@@ -9,7 +9,7 @@ import UIKit
 
 class SunAndMoonTableViewCell: UITableViewCell {
 
-    private weak var weather: TestDailyWeatherModel?
+    private var weather: DailyWeatherModel?
 
     private let sunAndMoonView = SunView()
 
@@ -31,7 +31,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-    func setWeather(model weather: TestDailyWeatherModel) {
+    func setWeather(model weather: DailyWeatherModel) {
         self.weather = weather
     }
 

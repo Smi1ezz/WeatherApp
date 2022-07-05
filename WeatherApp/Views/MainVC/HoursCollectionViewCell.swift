@@ -52,7 +52,7 @@ class HoursCollectionViewCell: UICollectionViewCell {
         self.delegate = delegate
     }
 
-    func setupWithInfo(about weather: TestWeatherModelDaily, toHour: Int) {
+    func setupWithInfo(about weather: WeatherModelDaily, toHour: Int) {
         hourLabel.text = {
             let unixDate = weather.hourlyWeather[toHour].dt
             if GlobalAppFormatter.shared.isEquelDates(now: Date(), unixDate: unixDate) == true {

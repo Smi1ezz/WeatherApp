@@ -15,7 +15,7 @@ class DateTableViewCell: UITableViewCell {
 
     private weak var delegate: DTVSDelegate?
 
-    private weak var weather: TestWeatherModelDaily?
+    private var weather: WeatherModelDaily?
 
     private let dateCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -42,7 +42,7 @@ class DateTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setWeather(_ weather: TestWeatherModelDaily) {
+    func setWeather(_ weather: WeatherModelDaily) {
         self.weather = weather
     }
 

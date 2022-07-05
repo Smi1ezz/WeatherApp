@@ -18,7 +18,7 @@ class DateCollectionViewCell: UICollectionViewCell {
 
     private weak var delegate: DCVCDelegate?
 
-    private weak var weather: TestWeatherModelDaily?
+    private var weather: WeatherModelDaily?
 
     private let dateLabel: UILabel = {
         let dateLabel = UILabel()
@@ -62,7 +62,7 @@ class DateCollectionViewCell: UICollectionViewCell {
         dateLabel.text = GlobalAppFormatter.shared.formateDate(fromUNIX: date, to: .daySlashMounth)
     }
 
-    func setWeather(_ weather: TestWeatherModelDaily) {
+    func setWeather(_ weather: WeatherModelDaily) {
         self.weather = weather
     }
 

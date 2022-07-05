@@ -9,7 +9,7 @@ import UIKit
 
 class TwentyFourHoursTableViewCell: UITableViewCell {
 
-    private weak var weather: TestHourlyWeatherModel?
+    private var weather: HourlyWeatherModel?
 
     private let dateLabel: UILabel = {
         let dateLabel = UILabel()
@@ -54,7 +54,7 @@ class TwentyFourHoursTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setWeather(_ weather: TestHourlyWeatherModel) {
+    func setWeather(_ weather: HourlyWeatherModel) {
         self.weather = weather
     }
 

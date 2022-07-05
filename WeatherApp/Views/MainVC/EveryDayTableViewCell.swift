@@ -64,7 +64,7 @@ class EveryDayTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupWithInfo(about weather: TestDailyWeatherModel) {
+    func setupWithInfo(about weather: DailyWeatherModel) {
         dateLabel.text = GlobalAppFormatter.shared.formateDate(fromUNIX: weather.dt, to: .daySlashMounth)
         humidityLabel.text = "\(weather.humidity)%"
         descriptionLabel.text = weather.weather[0].description

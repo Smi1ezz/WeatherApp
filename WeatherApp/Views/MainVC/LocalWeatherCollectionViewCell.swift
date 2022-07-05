@@ -9,7 +9,7 @@ import UIKit
 
 class LocalWeatherCollectionViewCell: UICollectionViewCell {
 
-    private weak var weather: TestWeatherModelDaily?
+    private var weather: WeatherModelDaily?
 
     private weak var router: RouterProtocol?
 
@@ -82,7 +82,7 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
         self.router = router
     }
 
-    func setupCellsSubviewsWithInfo(about weather: TestWeatherModelDaily) {
+    func setupCellsSubviewsWithInfo(about weather: WeatherModelDaily) {
         shortInfoView.setupWithInfo(about: weather)
         self.weather = weather
         hoursCollectionView.reloadData()
