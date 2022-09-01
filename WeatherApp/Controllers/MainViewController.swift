@@ -82,6 +82,8 @@ class MainViewController: UIViewController {
         weatherStorageModel.addLocation(location)
 
         self.fetchWeatherFromModel(aboutCity: location)
+
+        setupSubviews()
     }
 
     func correctLocationsInModes() {

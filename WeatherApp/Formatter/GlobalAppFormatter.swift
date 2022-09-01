@@ -28,8 +28,11 @@ class GlobalAppFormatter: AppFormatter {
     func formateDate(fromUNIX date: Int, to format: AppDateVariants) -> String {
         let dateInDouble = Double(date)
         let date = Date(timeIntervalSince1970: dateInDouble)
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC-7") // установлен часовой пояс для лос-анджелеса. Для удобства тестирования, т.к. в симуляторе установлена такая локация.
-        dateFormatter.locale = NSLocale.current
+
+//        dateFormatter.locale = .init(identifier: "ru_RU")
+
+        dateFormatter.locale = .current
+
         dateFormatter.dateFormat = format.rawValue
         let strDate = dateFormatter.string(from: date)
         return strDate
@@ -40,7 +43,10 @@ class GlobalAppFormatter: AppFormatter {
         let dateFromUnix = Date(timeIntervalSince1970: unixDateInDouble)
 
         dateFormatter.dateFormat = "HH"
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC-7") // установлен часовой пояс для лос-анджелеса. Для удобства тестирования, т.к. в симуляторе установлена такая локация.
+
+//        dateFormatter.locale = .init(identifier: "ru_RU")
+
+        dateFormatter.locale = .current
 
         let current = dateFormatter.string(from: date)
         let unix = dateFormatter.string(from: dateFromUnix)
