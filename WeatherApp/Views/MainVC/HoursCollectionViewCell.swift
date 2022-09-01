@@ -38,9 +38,13 @@ class HoursCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.appColor(name: .appVioletBackground)
-        self.layer.borderColor = UIColor.appColor(name: .appBlueBackground).cgColor
         self.layer.cornerRadius = 22
-        self.layer.borderColor = UIColor.black.cgColor
+
+        self.layer.shadowColor = UIColor.appColor(name: .appVioletBackground).cgColor
+        self.layer.shadowOpacity = 1
+        self.layer.shadowOffset = CGSize.zero
+        self.layer.shadowRadius = 5
+
         setupSubviews()
     }
 
@@ -104,6 +108,8 @@ class HoursCollectionViewCell: UICollectionViewCell {
         didSet {
             self.backgroundColor = isSelected ? UIColor.appColor(name: .appBlueBackground) : UIColor.appColor(name: .appVioletBackground)
             self.layer.borderColor = isSelected ? UIColor.white.cgColor : UIColor.appColor(name: .appBlueBackground).cgColor
+            self.layer.shadowColor = isSelected ? UIColor.appColor(name: .appBlueBackground).cgColor : UIColor.appColor(name: .appVioletBackground).cgColor
+
             self.temperatureLabel.textColor =  isSelected ? .white : .black
             self.hourLabel.textColor = isSelected ? .white : UIColor.appColor(name: .appGrayForText)
         }

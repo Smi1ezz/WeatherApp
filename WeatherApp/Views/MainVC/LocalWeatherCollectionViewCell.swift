@@ -115,7 +115,7 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
         // ширина экрана iphone13 375point. Исходя их этого получаем коэфициент сторон shortInfoView
         shortInfoView.snp.makeConstraints { make in
             let screenWidth = UIScreen.main.bounds.width
-            make.top.equalTo(localWeatherScrollView)
+            make.top.equalTo(localWeatherScrollView.snp.top).offset(15)
             make.centerX.equalTo(localWeatherScrollView.snp.centerX)
             make.width.equalTo(screenWidth-30)
             make.height.equalTo((screenWidth-30)/(344/212))
@@ -131,11 +131,11 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(weatherForDayButton.snp.bottom).offset(10)
             make.left.equalTo(contentView.snp.left)
             make.right.equalTo(contentView.snp.right)
-            make.height.equalTo(83)
+            make.height.equalTo(100)
         }
 
         everyDayTableTitleView.snp.makeConstraints { make in
-            make.top.equalTo(hoursCollectionView.snp.bottom).offset(40)
+            make.top.equalTo(hoursCollectionView.snp.bottom).offset(30)
             make.left.equalTo(shortInfoView.snp.left)
             make.right.equalTo(shortInfoView.snp.right)
             make.height.equalTo(22)
@@ -167,6 +167,7 @@ extension LocalWeatherCollectionViewCell: UICollectionViewDataSource {
         cell.setupWithInfo(about: weather, toHour: indexPath.item)
         return cell
     }
+
 }
 
 extension LocalWeatherCollectionViewCell: UICollectionViewDelegateFlowLayout {
@@ -182,6 +183,7 @@ extension LocalWeatherCollectionViewCell: UICollectionViewDelegateFlowLayout {
         guard let weather = self.weather else { return }
         router?.showTwentyFourHoursVC(withWeather: weather)
     }
+
 }
 
 extension LocalWeatherCollectionViewCell: UICollectionViewDelegate {

@@ -62,6 +62,12 @@ class ShortInfoView: UIView {
         super.init(frame: frame)
         backgroundColor = UIColor.appColor(name: .appBlueBackground)
         self.layer.cornerRadius = 5
+
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 1
+        self.layer.shadowOffset = CGSize.zero
+        self.layer.shadowRadius = 5
+
     }
 
     required init?(coder: NSCoder) {
