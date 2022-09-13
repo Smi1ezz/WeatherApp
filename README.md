@@ -1,4 +1,4 @@
-# Don't forget the umbrella
+# Don't forget your umbrella
 
 ## PocketUmbrella is a weather forecast app. <br>Allow access to the location or choose your city yourself. 
 
