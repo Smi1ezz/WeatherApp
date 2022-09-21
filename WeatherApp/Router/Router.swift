@@ -57,7 +57,7 @@ class Router: RouterProtocol {
 
     func showAddCityAlertVC(onMainVC mainVC: MainViewController) {
         let alertVC = UIAlertController(title: "Добавить город",
-                                        message: "для добавления, введите название города английскими буквами. UPD API перестал корректно работать в городами России. Вводите столицы мира",
+                                        message: "введите название города на английском или русском языке.",
                                         preferredStyle: .alert)
 
         alertVC.addTextField(configurationHandler: { textField in
