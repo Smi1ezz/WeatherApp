@@ -10,7 +10,6 @@ import UIKit
 
 protocol MainCoordinatorProtocol: AnyObject {
     func setNavigation(controller: UINavigationController?)
-    func showSettingsVC()
     func showDailySummaryVC(withWeather weather: WeatherModelDaily, selectedIndex: Int)
     func showTwentyFourHoursVC(withWeather weather: WeatherModelDaily)
 }
@@ -20,10 +19,6 @@ final class MainCoordinator: MainCoordinatorProtocol {
 
     func setNavigation(controller: UINavigationController?) {
         self.naviVC = controller
-    }
-
-    func showSettingsVC() {
-        naviVC?.pushViewController(SettingsViewController(), animated: true)
     }
 
     func showDailySummaryVC(withWeather weather: WeatherModelDaily, selectedIndex: Int) {

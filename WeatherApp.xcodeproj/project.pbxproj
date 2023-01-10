@@ -44,11 +44,6 @@
 		84EB835A280DC07E00143EF4 /* SunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8359280DC07E00143EF4 /* SunView.swift */; };
 		84EB835C280DC1A600143EF4 /* TextLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB835B280DC1A600143EF4 /* TextLineView.swift */; };
 		84EB835E280DC1B400143EF4 /* ImgLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB835D280DC1B400143EF4 /* ImgLineView.swift */; };
-		84EB8361280EAE5900143EF4 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8360280EAE5900143EF4 /* SettingsViewController.swift */; };
-		84EB8363280EAECE00143EF4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8362280EAECE00143EF4 /* SettingsView.swift */; };
-		84EB8365280EB01300143EF4 /* ToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8364280EB01200143EF4 /* ToggleView.swift */; };
-		84EB8367280EB37100143EF4 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8366280EB37100143EF4 /* BackgroundView.swift */; };
-		84EB8369280EC69000143EF4 /* LineViewForSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8368280EC69000143EF4 /* LineViewForSettings.swift */; };
 		84EB839A28255EEB00143EF4 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB839928255EEB00143EF4 /* NetworkManager.swift */; };
 		84EB839C28255F9900143EF4 /* WeatherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB839B28255F9900143EF4 /* WeatherModels.swift */; };
 		84EB83D2282BDFBC00143EF4 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB83D1282BDFBC00143EF4 /* LocationManager.swift */; };
@@ -96,11 +91,6 @@
 		84EB8359280DC07E00143EF4 /* SunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunView.swift; sourceTree = "<group>"; };
 		84EB835B280DC1A600143EF4 /* TextLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLineView.swift; sourceTree = "<group>"; };
 		84EB835D280DC1B400143EF4 /* ImgLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgLineView.swift; sourceTree = "<group>"; };
-		84EB8360280EAE5900143EF4 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		84EB8362280EAECE00143EF4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		84EB8364280EB01200143EF4 /* ToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleView.swift; sourceTree = "<group>"; };
-		84EB8366280EB37100143EF4 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
-		84EB8368280EC69000143EF4 /* LineViewForSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineViewForSettings.swift; sourceTree = "<group>"; };
 		84EB839928255EEB00143EF4 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		84EB839B28255F9900143EF4 /* WeatherModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModels.swift; sourceTree = "<group>"; };
 		84EB83D1282BDFBC00143EF4 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -218,7 +208,6 @@
 		84EB831627F3440400143EF4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				84EB835F280EAE2900143EF4 /* SettingsVC */,
 				84EB83412809C2D200143EF4 /* DailySummaryVC */,
 				84EB833A2808386B00143EF4 /* TwentyFourHoursVC */,
 			);
@@ -230,7 +219,6 @@
 			children = (
 				84EB83382808385100143EF4 /* TwentyFourHoursViewController.swift */,
 				84EB833F2809C21400143EF4 /* DailySummaryViewController.swift */,
-				84EB8360280EAE5900143EF4 /* SettingsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -338,17 +326,6 @@
 				84EB834A2809C35A00143EF4 /* PressureTableViewCell.swift */,
 			);
 			path = airCell;
-			sourceTree = "<group>";
-		};
-		84EB835F280EAE2900143EF4 /* SettingsVC */ = {
-			isa = PBXGroup;
-			children = (
-				84EB8366280EB37100143EF4 /* BackgroundView.swift */,
-				84EB8362280EAECE00143EF4 /* SettingsView.swift */,
-				84EB8364280EB01200143EF4 /* ToggleView.swift */,
-				84EB8368280EC69000143EF4 /* LineViewForSettings.swift */,
-			);
-			path = SettingsVC;
 			sourceTree = "<group>";
 		};
 		84EB839828255EB400143EF4 /* NetworkService */ = {
@@ -532,15 +509,12 @@
 				84EB83432809C30500143EF4 /* DateTableViewCell.swift in Sources */,
 				84CF35B3296D9AEA0052753E /* OnboardingPresenter.swift in Sources */,
 				84EB839A28255EEB00143EF4 /* NetworkManager.swift in Sources */,
-				84EB8367280EB37100143EF4 /* BackgroundView.swift in Sources */,
 				84EB831E27F3639100143EF4 /* ShortInfoView.swift in Sources */,
 				84AC8F92283E32F9004F56E3 /* PageControllDelegate.swift in Sources */,
-				84EB8369280EC69000143EF4 /* LineViewForSettings.swift in Sources */,
 				84EB8357280DB37C00143EF4 /* BorderExtension.swift in Sources */,
 				84EB835C280DC1A600143EF4 /* TextLineView.swift in Sources */,
 				84EB83452809C31600143EF4 /* DayTableViewCell.swift in Sources */,
 				84EB830127F3090F00143EF4 /* AppDelegate.swift in Sources */,
-				84EB8363280EAECE00143EF4 /* SettingsView.swift in Sources */,
 				84EB834B2809C35A00143EF4 /* PressureTableViewCell.swift in Sources */,
 				84EB8353280D896700143EF4 /* CenterViewForDailyVC.swift in Sources */,
 				84EB832627F5BC7500143EF4 /* MainWeatherPresenter.swift in Sources */,
@@ -550,8 +524,6 @@
 				84EB832027F3662300143EF4 /* EveryDayTableTitleView.swift in Sources */,
 				84EB835A280DC07E00143EF4 /* SunView.swift in Sources */,
 				84EB833C2808389A00143EF4 /* TwentyFourHoursTableViewCell.swift in Sources */,
-				84EB8365280EB01300143EF4 /* ToggleView.swift in Sources */,
-				84EB8361280EAE5900143EF4 /* SettingsViewController.swift in Sources */,
 				84EB839C28255F9900143EF4 /* WeatherModels.swift in Sources */,
 				84EB832B27F6E79C00143EF4 /* OnboardingViewController.swift in Sources */,
 				84EB832427F45A6600143EF4 /* LocalWeatherCollectionViewCell.swift in Sources */,

@@ -104,7 +104,7 @@ final class MainViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "menu"),
                                                            style: .done,
                                                            target: self,
-                                                           action: #selector(goToSettings))
+                                                           action: #selector(reset))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "location"),
                                                             style: .done,
                                                             target: self,
@@ -112,10 +112,7 @@ final class MainViewController: UIViewController {
     }
 
     @objc
-    func goToSettings() {
-        // router show settings VC - функция настройки в разработке.
-        // Сейчас это кнокпа сброса данных. Имитация первого запуска
-
+    func reset() {
         print("данные приложения сброшены. Имитация первого запуска")
         UserDefaults.standard.set(false, forKey: UserDefaultsKeys.onboardingCompleted.rawValue)
         UserDefaults.standard.set(object: [Location](), forKey: UserDefaultsKeys.userLocations.rawValue)

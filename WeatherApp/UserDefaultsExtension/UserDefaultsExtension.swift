@@ -11,11 +11,6 @@ enum UserDefaultsKeys: String {
     case locationAvailible // bool
     case userLocations // хранит массив добавленных локаций. По умолчанию [Locations]()
     case onboardingCompleted // bool
-
-    case temperatureCelsius // bool
-    case speedMi // bool
-    case timeTwentyFourHours // bool
-    case notificationsOn // bool
 }
 
 extension UserDefaults {
