@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PressureTableViewCell: UITableViewCell {
+final class PressureTableViewCell: UITableViewCell {
 
     private var weather: DailyWeatherModel?
 
@@ -59,16 +59,16 @@ class PressureTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setWeather(model weather: DailyWeatherModel) {
+        self.weather = weather
+        setupCell()
+    }
+
     private func setupSubviews() {
         [titleLabel, scoreLabel, scoreDescriptionButton, descriptionLabel].forEach { item in
             contentView.addSubview(item)
         }
         setupConstraints()
-    }
-
-    func setWeather(model weather: DailyWeatherModel) {
-        self.weather = weather
-        setupCell()
     }
 
     private func setupCell() {
@@ -91,7 +91,6 @@ class PressureTableViewCell: UITableViewCell {
         default:
             scoreDescriptionButton.setTitle("очень высокое", for: .normal)
         }
-
     }
 
     private func setupConstraints() {

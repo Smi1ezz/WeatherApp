@@ -7,8 +7,7 @@
 
 import UIKit
 
-class SunView: UIView {
-
+final class SunView: UIView {
     private let titleLabel: UILabel = {
         let descriptionLabel = UILabel()
         descriptionLabel.text = "Солнце и луна"
@@ -56,13 +55,16 @@ class SunView: UIView {
     }
 
     private func setupSubviews() {
-        [titleLabel, sunImgLine, sunDawnTextLine, sunDuskTextLine, moonImgLine, moonDawnTextLine, moonDuskTextLine, centerBorderLine].forEach { item in
-            self.addSubview(item)
-        }
+        [titleLabel, sunImgLine, sunDawnTextLine, sunDuskTextLine, moonImgLine, moonDawnTextLine, moonDuskTextLine, centerBorderLine].forEach { self.addSubview($0) }
 
-        sunDawnTextLine.addBorders(edges: [.top, .bottom], color: UIColor.appColor(name: .appBlueBackground), inset: 0, thickness: 0.5)
-        moonDawnTextLine.addBorders(edges: [.top, .bottom], color: UIColor.appColor(name: .appBlueBackground), inset: 0, thickness: 0.5)
-
+        sunDawnTextLine.addBorders(edges: [.top, .bottom],
+                                   color: UIColor.appColor(name: .appBlueBackground),
+                                   inset: 0,
+                                   thickness: 0.5)
+        moonDawnTextLine.addBorders(edges: [.top, .bottom],
+                                    color: UIColor.appColor(name: .appBlueBackground),
+                                    inset: 0,
+                                    thickness: 0.5)
         setupConstraints()
     }
 

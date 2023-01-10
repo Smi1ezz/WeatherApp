@@ -38,29 +38,26 @@ class CenterViewForDailyVC: UIView {
     }
 
     private func setupSubviews() {
-        [weatherImg, descriptionLabel, temperatureLabel].forEach { item in
-            self.addSubview(item)
-        }
+        [weatherImg, descriptionLabel, temperatureLabel].forEach { self.addSubview($0) }
         setupConstraints()
     }
 
     private func setupConstraints() {
         weatherImg.snp.makeConstraints { make in
-            make.top.equalTo(self.snp.top)
-            make.left.equalTo(self.snp.left)
+            make.top.left.equalToSuperview()
             make.width.equalTo(30)
             make.height.equalTo(37)
         }
 
         temperatureLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.snp.top)
+            make.top.equalToSuperview()
             make.left.equalTo(weatherImg.snp.right).offset(6)
-            make.right.equalTo(self.snp.right)
+            make.right.equalToSuperview()
         }
 
         descriptionLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(self.snp.centerX)
-            make.bottom.equalTo(self.snp.bottom)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
 
     }

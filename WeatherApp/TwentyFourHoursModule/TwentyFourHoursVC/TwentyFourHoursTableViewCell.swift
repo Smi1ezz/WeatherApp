@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TwentyFourHoursTableViewCell: UITableViewCell {
+final class TwentyFourHoursTableViewCell: UITableViewCell {
 
     private var weather: HourlyWeatherModel?
 
@@ -56,9 +56,10 @@ class TwentyFourHoursTableViewCell: UITableViewCell {
 
     func setWeather(_ weather: HourlyWeatherModel) {
         self.weather = weather
+        setupCell()
     }
 
-    func setupCell() {
+    private func setupCell() {
         guard let weather = weather else {
             return
         }
@@ -137,7 +138,5 @@ class TwentyFourHoursTableViewCell: UITableViewCell {
             make.height.equalTo(19)
             make.bottom.equalTo(contentView.snp.bottom).offset(-8)
         }
-
     }
-
 }

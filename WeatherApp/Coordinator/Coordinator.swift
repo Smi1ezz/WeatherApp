@@ -22,15 +22,14 @@ final class MainCoordinator: MainCoordinatorProtocol {
     }
 
     func showDailySummaryVC(withWeather weather: WeatherModelDaily, selectedIndex: Int) {
-        let viewController = DailySummaryViewController()
-        viewController.setWeather(weather)
-        viewController.selectedDateIndex = selectedIndex
+        let dailyPresenter = DailyPresenter(weather: weather, selectedIndex: selectedIndex)
+        let viewController = DailySummaryViewController(presenter: dailyPresenter)
         naviVC?.pushViewController(viewController, animated: true)
     }
 
     func showTwentyFourHoursVC(withWeather weather: WeatherModelDaily) {
-        let viewController = TwentyFourHoursViewController()
-        viewController.setWeather(weather)
+        let twentyFourHourPresenter = TwentyHourPresenter(weather: weather)
+        let viewController = TwentyFourHoursViewController(presenter: twentyFourHourPresenter)
         naviVC?.pushViewController(viewController, animated: true)
     }
 

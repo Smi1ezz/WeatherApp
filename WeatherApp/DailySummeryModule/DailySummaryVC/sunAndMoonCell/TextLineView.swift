@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TextLineView: UIView {
+final class TextLineView: UIView {
 
     let descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()

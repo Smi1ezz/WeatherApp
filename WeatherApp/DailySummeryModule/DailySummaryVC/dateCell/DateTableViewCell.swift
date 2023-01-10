@@ -11,7 +11,7 @@ protocol DTVSDelegate: AnyObject {
     func reloadDataInTableView()
 }
 
-class DateTableViewCell: UITableViewCell {
+final class DateTableViewCell: UITableViewCell {
 
     private weak var delegate: DTVSDelegate?
 
@@ -35,7 +35,6 @@ class DateTableViewCell: UITableViewCell {
         dateCollectionView.register(DateCollectionViewCell.self, forCellWithReuseIdentifier: "DateCollectionViewCell")
         contentView.addSubview(dateCollectionView)
         setupConstraints()
-
     }
 
     required init?(coder: NSCoder) {
@@ -49,7 +48,6 @@ class DateTableViewCell: UITableViewCell {
     func changeSelectedCollectionViewCell(to index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
         dateCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
-
     }
 
     func setTableViewCell(delegate: DTVSDelegate) {
@@ -68,9 +66,7 @@ class DateTableViewCell: UITableViewCell {
             make.right.equalTo(contentView.snp.right)
             make.bottom.equalTo(contentView.snp.bottom)
         }
-
     }
-
 }
 
 extension DateTableViewCell: UICollectionViewDataSource {
@@ -84,16 +80,12 @@ extension DateTableViewCell: UICollectionViewDataSource {
         }
 
         cell.setCollectionViewCell(delegate: self.delegate as? DCVCDelegate)
-
+        cell.changeIndexTo(indexPath.row)
         if let weather = weather {
             cell.setWeather(weather)
         }
-
-        cell.changeIndexTo(indexPath.row)
-        cell.setupCell()
         return cell
     }
-
 }
 
 extension DateTableViewCell: UICollectionViewDelegateFlowLayout {

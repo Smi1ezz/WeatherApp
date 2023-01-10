@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SunAndMoonTableViewCell: UITableViewCell {
+final class SunAndMoonTableViewCell: UITableViewCell {
 
     private var weather: DailyWeatherModel?
 
@@ -45,10 +45,7 @@ class SunAndMoonTableViewCell: UITableViewCell {
 
     private func setupConstraints() {
         sunAndMoonView.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top)
-            make.left.equalTo(contentView.snp.left)
-            make.right.equalTo(contentView.snp.right)
-            make.bottom.equalTo(contentView.snp.bottom)
+            make.top.left.right.bottom.equalToSuperview()
         }
     }
 

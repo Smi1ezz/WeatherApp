@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DayTableViewCell: UITableViewCell {
+final class DayTableViewCell: UITableViewCell {
 
     enum State {
         case day, night
@@ -62,11 +62,7 @@ class DayTableViewCell: UITableViewCell {
         }
         setupConstraints()
 
-        guard state == .night else {
-            setupDayState()
-            return
-        }
-        setupNightState()
+        state == .night ? setupNightState() : setupDayState()
 
     }
 
@@ -79,69 +75,69 @@ class DayTableViewCell: UITableViewCell {
         self.weather = weather
     }
 
-    func setupDayState() {
+    private func setupDayState() {
         self.titleLabel.text = "День"
 
-        let temperature = NSString(format: "%.0f", (weather?.temp.day ?? 99))
+        let temperature = NSString(format: "%.0f", (weather?.temp.day ?? 12))
         centerView.temperatureLabel.text = "\(temperature)°"
         centerView.descriptionLabel.text = weather?.weather[0].main
         centerView.weatherImg.image = UIImage(named: "\(weather?.weather[0].icon ?? "sun")")
 
         senseLineView.descriptionLabel.text = "По ощущениям"
-        let senseTemperature = NSString(format: "%.0f", (weather?.feelsLike.day ?? 99))
+        let senseTemperature = NSString(format: "%.0f", (weather?.feelsLike.day ?? 13))
         senseLineView.valueLabel.text = "\(senseTemperature)°"
         senseLineView.weatherImg.image = UIImage(named: "termHot")
 
         windLineView.descriptionLabel.text = "Ветер"
-        let windSpeed = NSString(format: "%.0f", (weather?.windSpeed ?? 99))
+        let windSpeed = NSString(format: "%.0f", (weather?.windSpeed ?? 3))
         windLineView.valueLabel.text = "\(windSpeed)"
         windLineView.weatherImg.image = UIImage(named: "wind")
 
         ufLineView.descriptionLabel.text = "УФ-излучение"
-        let ufIndex = NSString(format: "%.0f", (weather?.uvi ?? 99))
+        let ufIndex = NSString(format: "%.0f", (weather?.uvi ?? 78))
         ufLineView.valueLabel.text = "\(ufIndex)"
         ufLineView.weatherImg.image = UIImage(named: "sun")
 
         rainFallView.descriptionLabel.text = "Дождь"
-        let rainy = NSString(format: "%.0f", ((weather?.pop ?? 99) * 100))
+        let rainy = NSString(format: "%.0f", ((weather?.pop ?? 0.04) * 100))
         rainFallView.valueLabel.text = "\(rainy)%"
         rainFallView.weatherImg.image = UIImage(named: "cloudRain")
 
         cloudyView.descriptionLabel.text = "Облачность"
-        cloudyView.valueLabel.text = "\(weather?.clouds ?? 99)%"
+        cloudyView.valueLabel.text = "\(weather?.clouds ?? 25)%"
         cloudyView.weatherImg.image = UIImage(named: "cloudBlue")
     }
 
-    func setupNightState() {
+    private func setupNightState() {
         self.titleLabel.text = "Ночь"
 
-        let temperature = NSString(format: "%.0f", (weather?.temp.eve ?? 99))
+        let temperature = NSString(format: "%.0f", (weather?.temp.eve ?? 10))
         centerView.temperatureLabel.text = "\(temperature)°"
         centerView.descriptionLabel.text = weather?.weather[0].main
         centerView.weatherImg.image = UIImage(named: "\(weather?.weather[0].icon ?? "sun")")
 
         senseLineView.descriptionLabel.text = "По ощущениям"
-        let senseTemperature = NSString(format: "%.0f", (weather?.feelsLike.nigth ?? 99))
+        let senseTemperature = NSString(format: "%.0f", (weather?.feelsLike.nigth ?? 12))
         senseLineView.valueLabel.text = "\(senseTemperature)°"
         senseLineView.weatherImg.image = UIImage(named: "termHot")
 
         windLineView.descriptionLabel.text = "Ветер"
-        let windSpeed = NSString(format: "%.0f", (weather?.windSpeed ?? 99))
+        let windSpeed = NSString(format: "%.0f", (weather?.windSpeed ?? 4))
         windLineView.valueLabel.text = "\(windSpeed)"
         windLineView.weatherImg.image = UIImage(named: "wind")
 
         ufLineView.descriptionLabel.text = "УФ-излучение"
-        let ufIndex = NSString(format: "%.0f", (weather?.uvi ?? 99))
+        let ufIndex = NSString(format: "%.0f", (weather?.uvi ?? 75))
         ufLineView.valueLabel.text = "\(ufIndex)"
         ufLineView.weatherImg.image = UIImage(named: "sun")
 
         rainFallView.descriptionLabel.text = "Дождь"
-        let rainy = NSString(format: "%.0f", ((weather?.pop ?? 99) * 100))
+        let rainy = NSString(format: "%.0f", ((weather?.pop ?? 0.04) * 100))
         rainFallView.valueLabel.text = "\(rainy)%"
         rainFallView.weatherImg.image = UIImage(named: "cloudRain")
 
         cloudyView.descriptionLabel.text = "Облачность"
-        cloudyView.valueLabel.text = "\(weather?.clouds ?? 99)%"
+        cloudyView.valueLabel.text = "\(weather?.clouds ?? 30)%"
         cloudyView.weatherImg.image = UIImage(named: "cloudBlue")
     }
 

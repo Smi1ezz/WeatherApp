@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImgLineView: UIView {
+final class ImgLineView: UIView {
 
     let weatherImg: UIImageView = {
         let weatherImg = UIImageView(image: UIImage(named: "sun"))
@@ -17,7 +17,7 @@ class ImgLineView: UIView {
 
     let valueLabel: UILabel = {
         let temperatureLabel = UILabel()
-        temperatureLabel.text = "" // в api нет длительности светового дня, поискать
+        temperatureLabel.text = ""
         temperatureLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return temperatureLabel
     }()

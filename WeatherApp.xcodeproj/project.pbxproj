@@ -13,6 +13,8 @@
 		84AC8F92283E32F9004F56E3 /* PageControllDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AC8F91283E32F9004F56E3 /* PageControllDelegate.swift */; };
 		84CF35B02969E13B0052753E /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CF35AF2969E13B0052753E /* AppCoordinator.swift */; };
 		84CF35B3296D9AEA0052753E /* OnboardingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CF35B2296D9AEA0052753E /* OnboardingPresenter.swift */; };
+		84CF35B9296DAC100052753E /* DailyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CF35B8296DAC100052753E /* DailyPresenter.swift */; };
+		84CF35BB296DC1740052753E /* TwentyHourPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CF35BA296DC1740052753E /* TwentyHourPresenter.swift */; };
 		84DA3EB62865D40F00FE6B73 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DA3EB52865D40F00FE6B73 /* LocationModel.swift */; };
 		84EB830127F3090F00143EF4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB830027F3090F00143EF4 /* AppDelegate.swift */; };
 		84EB830327F3090F00143EF4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB830227F3090F00143EF4 /* SceneDelegate.swift */; };
@@ -58,6 +60,8 @@
 		84AC8F91283E32F9004F56E3 /* PageControllDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControllDelegate.swift; sourceTree = "<group>"; };
 		84CF35AF2969E13B0052753E /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		84CF35B2296D9AEA0052753E /* OnboardingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPresenter.swift; sourceTree = "<group>"; };
+		84CF35B8296DAC100052753E /* DailyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPresenter.swift; sourceTree = "<group>"; };
+		84CF35BA296DC1740052753E /* TwentyHourPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwentyHourPresenter.swift; sourceTree = "<group>"; };
 		84DA3EB52865D40F00FE6B73 /* LocationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
 		84EB82FD27F3090F00143EF4 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84EB830027F3090F00143EF4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -162,6 +166,24 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		84CF35B6296DABC20052753E /* DailySummeryModule */ = {
+			isa = PBXGroup;
+			children = (
+				84EB83412809C2D200143EF4 /* DailySummaryVC */,
+				84CF35B8296DAC100052753E /* DailyPresenter.swift */,
+			);
+			path = DailySummeryModule;
+			sourceTree = "<group>";
+		};
+		84CF35B7296DABD40052753E /* TwentyFourHoursModule */ = {
+			isa = PBXGroup;
+			children = (
+				84EB833A2808386B00143EF4 /* TwentyFourHoursVC */,
+				84CF35BA296DC1740052753E /* TwentyHourPresenter.swift */,
+			);
+			path = TwentyFourHoursModule;
+			sourceTree = "<group>";
+		};
 		84EB82F427F3090F00143EF4 = {
 			isa = PBXGroup;
 			children = (
@@ -184,8 +206,10 @@
 			isa = PBXGroup;
 			children = (
 				84CF35B4296DA9D80052753E /* Models */,
-				84CF35B1296D9AAB0052753E /* OnboardingScreenModule */,
 				84CF35AB2969B94F0052753E /* MainScreenModule */,
+				84CF35B1296D9AAB0052753E /* OnboardingScreenModule */,
+				84CF35B6296DABC20052753E /* DailySummeryModule */,
+				84CF35B7296DABD40052753E /* TwentyFourHoursModule */,
 				845675072848AE5300CBFB7B /* PageControllDelegate */,
 				84AC8F8E283D32DD004F56E3 /* UserDefaultsExtension */,
 				84EB83D3282D014900143EF4 /* Formatter */,
@@ -194,8 +218,6 @@
 				84EB8355280DB35900143EF4 /* BorderExtenson */,
 				84EB832C27FAF07C00143EF4 /* AppColor */,
 				84EB832727F5C6FC00143EF4 /* Coordinator */,
-				84EB831627F3440400143EF4 /* Views */,
-				84EB831727F3441300143EF4 /* Controllers */,
 				84EB830027F3090F00143EF4 /* AppDelegate.swift */,
 				84EB830227F3090F00143EF4 /* SceneDelegate.swift */,
 				84EB830927F3091100143EF4 /* Assets.xcassets */,
@@ -203,24 +225,6 @@
 				84EB830E27F3091100143EF4 /* Info.plist */,
 			);
 			path = WeatherApp;
-			sourceTree = "<group>";
-		};
-		84EB831627F3440400143EF4 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				84EB83412809C2D200143EF4 /* DailySummaryVC */,
-				84EB833A2808386B00143EF4 /* TwentyFourHoursVC */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		84EB831727F3441300143EF4 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				84EB83382808385100143EF4 /* TwentyFourHoursViewController.swift */,
-				84EB833F2809C21400143EF4 /* DailySummaryViewController.swift */,
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 		84EB831B27F3613E00143EF4 /* MainVC */ = {
@@ -265,6 +269,7 @@
 		84EB833A2808386B00143EF4 /* TwentyFourHoursVC */ = {
 			isa = PBXGroup;
 			children = (
+				84EB83382808385100143EF4 /* TwentyFourHoursViewController.swift */,
 				84EB833B2808389A00143EF4 /* TwentyFourHoursTableViewCell.swift */,
 				84EB833D28096A6C00143EF4 /* SituationLineView.swift */,
 			);
@@ -274,6 +279,7 @@
 		84EB83412809C2D200143EF4 /* DailySummaryVC */ = {
 			isa = PBXGroup;
 			children = (
+				84EB833F2809C21400143EF4 /* DailySummaryViewController.swift */,
 				84EB834E280D84E600143EF4 /* dateCell */,
 				84EB834F280D84FC00143EF4 /* dayCell */,
 				84EB8354280DA6CE00143EF4 /* sunAndMoonCell */,
@@ -502,6 +508,7 @@
 				84CF35B02969E13B0052753E /* AppCoordinator.swift in Sources */,
 				84EB831927F3444B00143EF4 /* MainViewController.swift in Sources */,
 				84EB833E28096A6C00143EF4 /* SituationLineView.swift in Sources */,
+				84CF35B9296DAC100052753E /* DailyPresenter.swift in Sources */,
 				84EB8335280038BA00143EF4 /* EveryDayTableViewCell.swift in Sources */,
 				84EB83D2282BDFBC00143EF4 /* LocationManager.swift in Sources */,
 				84EB83D5282D018500143EF4 /* GlobalAppFormatter.swift in Sources */,
@@ -521,6 +528,7 @@
 				846EAF56286B205200AC93A7 /* Endpoint.swift in Sources */,
 				84EB830327F3090F00143EF4 /* SceneDelegate.swift in Sources */,
 				84EB834D2809CB4800143EF4 /* DateCollectionViewCell.swift in Sources */,
+				84CF35BB296DC1740052753E /* TwentyHourPresenter.swift in Sources */,
 				84EB832027F3662300143EF4 /* EveryDayTableTitleView.swift in Sources */,
 				84EB835A280DC07E00143EF4 /* SunView.swift in Sources */,
 				84EB833C2808389A00143EF4 /* TwentyFourHoursTableViewCell.swift in Sources */,

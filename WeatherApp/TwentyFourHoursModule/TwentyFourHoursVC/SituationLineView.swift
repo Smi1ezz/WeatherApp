@@ -1,17 +1,18 @@
 //
-//  SituationLineViewForDailyVC.swift
+//  SituationLineView.swift
 //  WeatherApp
 //
-//  Created by admin on 18.04.2022.
+//  Created by admin on 15.04.2022.
 //
 
 import UIKit
 
-class SituationLineViewForDailyVC: UIView {
+final class SituationLineView: UIView {
 
     let weatherImg: UIImageView = {
         let weatherImg = UIImageView(image: UIImage(named: "cloudRain"))
         weatherImg.contentMode = .scaleAspectFit
+
         return weatherImg
     }()
 
@@ -49,20 +50,20 @@ class SituationLineViewForDailyVC: UIView {
 
     private func setupConstraints() {
         weatherImg.snp.makeConstraints { make in
-            make.left.equalTo(self.snp.left).offset(15)
-            make.centerY.equalTo(self.snp.centerY)
-            make.width.equalTo(25)
-            make.height.equalTo(25)
+            make.left.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.equalTo(12)
+            make.height.equalTo(12)
         }
 
         descriptionLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(self.snp.centerY)
-            make.left.equalTo(weatherImg.snp.right).offset(15)
+            make.centerY.equalToSuperview()
+            make.left.equalTo(weatherImg.snp.right).offset(4)
         }
 
         valueLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(self.snp.centerY)
-            make.right.equalTo(self.snp.right).offset(-15)
+            make.centerY.equalToSuperview()
+            make.right.equalToSuperview()
         }
     }
 

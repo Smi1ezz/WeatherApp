@@ -12,13 +12,12 @@ protocol DCVCDelegate: AnyObject {
     func reloadDataWithSelectedDate()
 }
 
-class DateCollectionViewCell: UICollectionViewCell {
+final class DateCollectionViewCell: UICollectionViewCell {
 
     private var index: Int?
+    private var weather: WeatherModelDaily?
 
     private weak var delegate: DCVCDelegate?
-
-    private var weather: WeatherModelDaily?
 
     private let dateLabel: UILabel = {
         let dateLabel = UILabel()
@@ -40,30 +39,9 @@ class DateCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupConstraints() {
-        dateLabel.snp.makeConstraints { make in
-            make.width.equalTo(76)
-            make.height.equalTo(22)
-            make.centerX.equalTo(contentView.snp.centerX)
-            make.centerY.equalTo(contentView.snp.centerY)
-        }
-    }
-
-    func setupCell() {
-        guard let weather = weather else {
-            return
-        }
-
-        guard let index = index else {
-            return
-        }
-
-        let date = weather.dailyWeather[index].dt
-        dateLabel.text = GlobalAppFormatter.shared.formateDate(fromUNIX: date, to: .daySlashMounth)
-    }
-
     func setWeather(_ weather: WeatherModelDaily) {
         self.weather = weather
+        setupCell()
     }
 
     func changeIndexTo(_ newIndex: Int) {
@@ -74,6 +52,23 @@ class DateCollectionViewCell: UICollectionViewCell {
         self.delegate = delegate
     }
 
+    private func setupCell() {
+        guard let weather = weather, let index = index else {
+            return
+        }
+
+        let date = weather.dailyWeather[index].dt
+        dateLabel.text = GlobalAppFormatter.shared.formateDate(fromUNIX: date, to: .daySlashMounth)
+    }
+
+    private func setupConstraints() {
+        dateLabel.snp.makeConstraints { make in
+            make.width.equalTo(76)
+            make.height.equalTo(22)
+            make.center.equalToSuperview()
+        }
+    }
+
     override var isSelected: Bool {
         didSet {
             self.contentView.backgroundColor = isSelected ? UIColor.blue : UIColor.white
@@ -82,5 +77,4 @@ class DateCollectionViewCell: UICollectionViewCell {
             delegate?.changeSelectedDate(to: index)
         }
     }
-
 }

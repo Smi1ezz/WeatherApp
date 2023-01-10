@@ -7,16 +7,26 @@
 
 import UIKit
 
-class DailySummaryViewController: UIViewController {
-
-    var selectedDateIndex: Int = 0
-
-    private var weather: WeatherModelDaily?
+final class DailySummaryViewController: UIViewController {
+    private let presenter: DailyPresenterProtocol
 
     private let dailySummaryTableView = UITableView(frame: .zero, style: .plain)
 
+    init(presenter: DailyPresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupSubviews()
+    }
+
+    private func setupSubviews() {
         dailySummaryTableView.delegate = self
         dailySummaryTableView.dataSource = self
         dailySummaryTableView.register(DateTableViewCell.self, forCellReuseIdentifier: "DateTableViewCell")
@@ -27,17 +37,15 @@ class DailySummaryViewController: UIViewController {
         dailySummaryTableView.showsVerticalScrollIndicator = false
         dailySummaryTableView.showsHorizontalScrollIndicator = false
         view.addSubview(dailySummaryTableView)
-
-        dailySummaryTableView.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top)
-            make.left.equalTo(view.snp.left).offset(15)
-            make.right.equalTo(view.snp.right).offset(-15)
-            make.bottom.equalTo(view.snp.bottom)
-        }
+        setupConstraints()
     }
 
-    func setWeather(_ weather: WeatherModelDaily) {
-        self.weather = weather
+    private func setupConstraints() {
+        dailySummaryTableView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(view)
+            make.left.equalTo(view.snp.left).offset(15)
+            make.right.equalTo(view.snp.right).offset(-15)
+        }
     }
 
     private func setMaskLayer(toCell cell: UITableViewCell) {
@@ -64,9 +72,8 @@ extension DailySummaryViewController: UITableViewDataSource {
 
     // swiftlint:disable:next cyclomatic_complexity
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let weather = weather else {
-            return UITableViewCell()
-        }
+        let weather = presenter.weather
+        let selectedDateIndex = presenter.selecterIndex
 
         switch indexPath.section {
         case 0:
@@ -148,7 +155,8 @@ extension DailySummaryViewController: UITableViewDelegate {
 
 extension DailySummaryViewController: DCVCDelegate {
     func changeSelectedDate(to index: Int) {
-        selectedDateIndex = index
+//        selectedDateIndex = index
+        presenter.newIndex(index)
         self.reloadInputViews()
     }
 
