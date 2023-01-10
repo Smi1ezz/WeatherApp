@@ -11,27 +11,25 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var appCoordinator: AppCoordinatorProtocol?
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
 
         guard let winScene = (scene as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: winScene)
-        let navigationController = UINavigationController()
-        let router: RouterProtocol = Router(withNaviVC: navigationController)
-        let userData = UserDefaults.standard
 
-        window.rootViewController = navigationController
+        let window = UIWindow(windowScene: winScene)
+        window.overrideUserInterfaceStyle = .light
+
+        let appCoordinator = AppCoordinator()
+
         window.backgroundColor = .white
         window.makeKeyAndVisible()
         self.window = window
+        self.appCoordinator = appCoordinator
 
-        if userData.bool(forKey: UserDefaultsKeys.onboardingCompleted.rawValue) {
-            router.showMainVC()
-        } else {
-            router.showOnboardingVC()
-        }
+        self.appCoordinator?.start()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

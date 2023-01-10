@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ShortInfoView: UIView {
+final class ShortInfoView: UIView {
 
     private let dayNightImg: UIImageView = {
        let dayNightImg = UIImageView(image: UIImage(named: "Sun"))
@@ -66,7 +66,8 @@ class ShortInfoView: UIView {
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOpacity = 1
         self.layer.shadowOffset = CGSize.zero
-        self.layer.shadowRadius = 5
+        self.layer.shadowRadius = 4
+        setupSubviews()
 
     }
 
@@ -75,36 +76,34 @@ class ShortInfoView: UIView {
     }
 
     func setupWithInfo(about weather: WeatherModelDaily) {
-        setupSubviews()
+        let currentWeather = weather.currentWeather
 
         dayNightImg.image = {
-            if weather.currentWeather.dt < weather.currentWeather.sunset && weather.currentWeather.dt > weather.currentWeather.sunrise {
+            if currentWeather.dt < currentWeather.sunset
+                && currentWeather.dt > weather.currentWeather.sunrise {
                 return UIImage(named: "sun")
             } else {
                 return UIImage(named: "moon")
             }
         }()
 
-        descriptionLabel.text = weather.currentWeather.weather[0].description
-        dateLabel.text = GlobalAppFormatter.shared.formateDate(fromUNIX: weather.currentWeather.dt, to: .dayDaySlashMounth)
-        temperatureLabel.text = String(NSString(format: "%0.f", weather.currentWeather.temp)) + "°"
-        windLabel.text = String(NSString(format: "%0.f", weather.currentWeather.windSpeed)) + "м/с"
+        descriptionLabel.text = currentWeather.weather[0].description
+        dateLabel.text = GlobalAppFormatter.shared.formateDate(fromUNIX: currentWeather.dt, to: .dayDaySlashMounth)
+        temperatureLabel.text = String(NSString(format: "%0.f", currentWeather.temp)) + "°"
+        windLabel.text = String(NSString(format: "%0.f", currentWeather.windSpeed)) + "м/с"
     }
 
     private func setupSubviews() {
-        [dayNightImg, dateLabel, tempImg, windImg, temperatureLabel, windLabel, descriptionLabel].forEach { item in
-            self.addSubview(item)
+        [dayNightImg, dateLabel, tempImg, windImg, temperatureLabel, windLabel, descriptionLabel].forEach {
+            self.addSubview($0)
         }
-
         setupConstraints()
     }
 
     private func setupConstraints() {
         dayNightImg.snp.makeConstraints { make in
-            make.centerX.equalTo(self.snp.centerX)
-            make.centerY.equalTo(self.snp.centerY)
-            make.width.equalTo(80)
-            make.height.equalTo(80)
+            make.center.equalToSuperview()
+            make.width.height.equalTo(80)
         }
 
         descriptionLabel.snp.makeConstraints { make in

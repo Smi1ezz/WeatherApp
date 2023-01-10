@@ -16,11 +16,9 @@ enum ObtainResults {
     case failure(error: Error)
 }
 
-class WeatherNetworkManager: WeatherNetworkManagerProtocol {
+final class WeatherNetworkManager: WeatherNetworkManagerProtocol {
     private let session = URLSession.shared
     private let decoder = JSONDecoder()
-
-    static let shared = WeatherNetworkManager()
 
     func fetchDataModelType<T: Codable>(endpoint: EndpointCases, modelType: T.Type, complition: @escaping (ObtainResults) -> Void) {
 

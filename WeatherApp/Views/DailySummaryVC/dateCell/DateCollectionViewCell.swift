@@ -70,7 +70,7 @@ class DateCollectionViewCell: UICollectionViewCell {
         self.index = newIndex
     }
 
-    func setCollectionViewCell(delegate: DCVCDelegate) {
+    func setCollectionViewCell(delegate: DCVCDelegate?) {
         self.delegate = delegate
     }
 

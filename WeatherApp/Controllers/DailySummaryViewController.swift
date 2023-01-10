@@ -62,6 +62,7 @@ extension DailySummaryViewController: UITableViewDataSource {
         return 1
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let weather = weather else {
             return UITableViewCell()
@@ -69,35 +70,43 @@ extension DailySummaryViewController: UITableViewDataSource {
 
         switch indexPath.section {
         case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DateTableViewCell", for: indexPath) as! DateTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateTableViewCell", for: indexPath) as? DateTableViewCell else {
+                return UITableViewCell()
+            }
             cell.setTableViewCell(delegate: self)
             cell.changeSelectedCollectionViewCell(to: selectedDateIndex)
             cell.setWeather(weather)
             setMaskLayer(toCell: cell)
             return cell
         case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DayTableViewCell", for: indexPath) as! DayTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DayTableViewCell", for: indexPath) as? DayTableViewCell else {
+                return UITableViewCell()
+            }
             cell.setWeather(model: weather.dailyWeather[selectedDateIndex])
             cell.setState(to: .day)
             setMaskLayer(toCell: cell)
             return cell
         case 2:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "NightTableViewCell", for: indexPath) as! DayTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "NightTableViewCell", for: indexPath) as? DayTableViewCell else {
+                return UITableViewCell()
+            }
             cell.setWeather(model: weather.dailyWeather[selectedDateIndex])
             cell.setState(to: .night)
             setMaskLayer(toCell: cell)
             return cell
         case 3:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SunAndMoonTableViewCell", for: indexPath) as! SunAndMoonTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SunAndMoonTableViewCell", for: indexPath) as? SunAndMoonTableViewCell else {
+                return UITableViewCell()
+            }
             setMaskLayer(toCell: cell)
             cell.setWeather(model: weather.dailyWeather[selectedDateIndex])
-            cell.setupCell()
             return cell
         case 4:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "AirTableViewCell", for: indexPath) as! PressureTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "AirTableViewCell", for: indexPath) as? PressureTableViewCell else {
+                return UITableViewCell()
+            }
             setMaskLayer(toCell: cell)
             cell.setWeather(model: weather.dailyWeather[selectedDateIndex])
-            cell.setupCell()
             return cell
         default:
             let cell = UITableViewCell()

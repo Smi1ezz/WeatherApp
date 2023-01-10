@@ -11,7 +11,7 @@ protocol HCVCDelegate: AnyObject {
     func selectCurrent(hour: Int)
 }
 
-class HoursCollectionViewCell: UICollectionViewCell {
+final class HoursCollectionViewCell: UICollectionViewCell {
     private weak var delegate: HCVCDelegate?
 
     private let hourLabel: UILabel = {
@@ -91,8 +91,7 @@ class HoursCollectionViewCell: UICollectionViewCell {
         }
 
         weatherImage.snp.makeConstraints { make in
-            make.centerX.equalTo(contentView.snp.centerX)
-            make.centerY.equalTo(contentView.snp.centerY)
+            make.center.equalToSuperview()
             make.width.equalTo(20)
             make.height.equalTo(20)
         }

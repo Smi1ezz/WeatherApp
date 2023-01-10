@@ -68,9 +68,10 @@ class PressureTableViewCell: UITableViewCell {
 
     func setWeather(model weather: DailyWeatherModel) {
         self.weather = weather
+        setupCell()
     }
 
-    func setupCell() {
+    private func setupCell() {
         guard let weather = weather else {
             return
         }

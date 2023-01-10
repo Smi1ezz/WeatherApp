@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EveryDayTableTitleView: UIView {
+final class EveryDayTableTitleView: UIView {
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = "Ежедневный прогноз"
@@ -47,15 +47,11 @@ class EveryDayTableTitleView: UIView {
 
     private func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.left.top.bottom.equalToSuperview()
         }
 
         howMuchDaysButton.snp.makeConstraints { make in
-            make.right.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.right.top.bottom.equalToSuperview()
         }
     }
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EveryDayTableViewCell: UITableViewCell {
+final class EveryDayTableViewCell: UITableViewCell {
 
     private let dateLabel: UILabel = {
         let dateLabel = UILabel()

@@ -7,11 +7,11 @@
 
 import UIKit
 
-class LocalWeatherCollectionViewCell: UICollectionViewCell {
+final class LocalWeatherCollectionViewCell: UICollectionViewCell {
 
     private var weather: WeatherModelDaily?
 
-    private weak var router: RouterProtocol?
+    private weak var coordinator: MainCoordinatorProtocol?
 
     private let localWeatherScrollView = UIScrollView()
 
@@ -78,8 +78,8 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(localWeatherScrollView)
     }
 
-    func setCell(router: RouterProtocol) {
-        self.router = router
+    func setCell(coordinator: MainCoordinatorProtocol) {
+        self.coordinator = coordinator
     }
 
     func setupCellsSubviewsWithInfo(about weather: WeatherModelDaily) {
@@ -87,6 +87,7 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
         self.weather = weather
         hoursCollectionView.reloadData()
         everyDayWeatherTableView.reloadData()
+
     }
 
     @objc
@@ -94,7 +95,7 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
         guard let weather = weather else {
             return
         }
-        router?.showTwentyFourHoursVC(withWeather: weather)
+        coordinator?.showTwentyFourHoursVC(withWeather: weather)
     }
 
     @objc
@@ -105,17 +106,13 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
     private func setupConstraints() {
 
         localWeatherScrollView.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top)
-            make.left.equalTo(contentView.snp.left)
-            make.right.equalTo(contentView.snp.right)
-            make.bottom.equalTo(contentView.snp.bottom)
-
+            make.top.left.right.bottom.equalTo(contentView)
         }
 
         // ширина экрана iphone13 375point. Исходя их этого получаем коэфициент сторон shortInfoView
         shortInfoView.snp.makeConstraints { make in
             let screenWidth = UIScreen.main.bounds.width
-            make.top.equalTo(localWeatherScrollView.snp.top).offset(15)
+            make.top.equalTo(localWeatherScrollView.snp.top).offset(10)
             make.centerX.equalTo(localWeatherScrollView.snp.centerX)
             make.width.equalTo(screenWidth-30)
             make.height.equalTo((screenWidth-30)/(344/212))
@@ -129,22 +126,19 @@ class LocalWeatherCollectionViewCell: UICollectionViewCell {
 
         hoursCollectionView.snp.makeConstraints { make in
             make.top.equalTo(weatherForDayButton.snp.bottom).offset(10)
-            make.left.equalTo(contentView.snp.left)
-            make.right.equalTo(contentView.snp.right)
+            make.left.right.equalTo(contentView)
             make.height.equalTo(100)
         }
 
         everyDayTableTitleView.snp.makeConstraints { make in
             make.top.equalTo(hoursCollectionView.snp.bottom).offset(30)
-            make.left.equalTo(shortInfoView.snp.left)
-            make.right.equalTo(shortInfoView.snp.right)
+            make.left.right.equalTo(shortInfoView)
             make.height.equalTo(22)
         }
 
         everyDayWeatherTableView.snp.makeConstraints { make in
             make.top.equalTo(everyDayTableTitleView.snp.bottom).offset(10)
-            make.left.equalTo(shortInfoView.snp.left)
-            make.right.equalTo(shortInfoView.snp.right)
+            make.left.right.equalTo(shortInfoView)
             make.bottom.equalTo(localWeatherScrollView)
             make.height.greaterThanOrEqualTo((56*7)+(10*6)+10)
         }
@@ -159,7 +153,9 @@ extension LocalWeatherCollectionViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HoursCollectionViewCell", for: indexPath) as! HoursCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HoursCollectionViewCell", for: indexPath) as? HoursCollectionViewCell else {
+            return UICollectionViewCell()
+        }
         guard let weather = weather else {
             return cell
         }
@@ -181,7 +177,7 @@ extension LocalWeatherCollectionViewCell: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let weather = self.weather else { return }
-        router?.showTwentyFourHoursVC(withWeather: weather)
+        coordinator?.showTwentyFourHoursVC(withWeather: weather)
     }
 
 }
@@ -198,7 +194,9 @@ extension LocalWeatherCollectionViewCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "EveryDayTableViewCell", for: indexPath) as! EveryDayTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "EveryDayTableViewCell", for: indexPath) as? EveryDayTableViewCell else {
+            return UITableViewCell()
+        }
 
         let verticalPadding: CGFloat = 10
 
@@ -223,13 +221,12 @@ extension LocalWeatherCollectionViewCell: UITableViewDataSource {
         guard let weather = self.weather else {
             return
         }
-        router?.showDailySummaryVC(withWeather: weather, selectedIndex: indexPath.row)
+        coordinator?.showDailySummaryVC(withWeather: weather, selectedIndex: indexPath.row)
     }
 }
 
 extension LocalWeatherCollectionViewCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // высота ячейки по макету+верхний и нижний отступы
         let cellHeight: CGFloat = 56
         let designOffset: CGFloat = 10
         return cellHeight + designOffset
@@ -239,6 +236,8 @@ extension LocalWeatherCollectionViewCell: UITableViewDelegate {
 extension LocalWeatherCollectionViewCell: HCVCDelegate {
     func selectCurrent(hour: Int) {
         let indexPath = IndexPath(item: hour, section: 0)
-        self.hoursCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+        self.hoursCollectionView.selectItem(at: indexPath,
+                                            animated: true,
+                                            scrollPosition: .centeredHorizontally)
     }
 }

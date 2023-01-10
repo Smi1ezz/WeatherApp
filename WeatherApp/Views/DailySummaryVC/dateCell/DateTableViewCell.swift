@@ -79,9 +79,11 @@ extension DateTableViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as! DateCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCollectionViewCell", for: indexPath) as? DateCollectionViewCell else {
+            return UICollectionViewCell()
+        }
 
-        cell.setCollectionViewCell(delegate: self.delegate as! DCVCDelegate)
+        cell.setCollectionViewCell(delegate: self.delegate as? DCVCDelegate)
 
         if let weather = weather {
             cell.setWeather(weather)

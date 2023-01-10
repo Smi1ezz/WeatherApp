@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OnboardingView: UIScrollView {
+final class OnboardingView: UIScrollView {
     private let pocketLabel: UILabel = {
         let pocketLabel = UILabel()
         pocketLabel.textAlignment = .left
@@ -86,9 +86,7 @@ class OnboardingView: UIScrollView {
     }
 
     private func setupSubviews() {
-        [pocketLabel, umbrellaLabel, smallDescriptionLabel, bigDescriptionLabel, agreeButton, disagreeButton, onboardingImg].forEach { item in
-            self.addSubview(item)
-        }
+        [pocketLabel, umbrellaLabel, smallDescriptionLabel, bigDescriptionLabel, agreeButton, disagreeButton, onboardingImg].forEach { self.addSubview($0) }
 
         setupAgreeButton()
         setupDisagreeButton()

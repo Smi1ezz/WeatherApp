@@ -12,7 +12,7 @@ protocol PageControllDelegate: AnyObject {
     func changeNaviTitle()
 }
 
-class CustomPageControl: UIPageControl {
+final class CustomPageControl: UIPageControl {
     weak var delegate: PageControllDelegate?
 
     override var currentPage: Int {

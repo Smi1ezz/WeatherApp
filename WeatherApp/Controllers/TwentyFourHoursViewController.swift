@@ -36,10 +36,7 @@ class TwentyFourHoursViewController: UIViewController {
 
     private func setupConstraints() {
         twentyFourTableView.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top)
-            make.left.equalTo(view.snp.left)
-            make.right.equalTo(view.snp.right)
-            make.bottom.equalTo(view.snp.bottom)
+            make.top.left.right.bottom.equalToSuperview()
         }
     }
 
@@ -52,7 +49,9 @@ extension TwentyFourHoursViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TwentyFourHoursTableViewCell", for: indexPath) as! TwentyFourHoursTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TwentyFourHoursTableViewCell", for: indexPath) as? TwentyFourHoursTableViewCell else {
+            return UITableViewCell()
+        }
         cell.setWeather(everyThreeHourWeather[indexPath.row])
         cell.setupCell()
         return cell

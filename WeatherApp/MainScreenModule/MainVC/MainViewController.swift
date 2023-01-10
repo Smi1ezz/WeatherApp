@@ -8,11 +8,9 @@
 import UIKit
 import SnapKit
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
 
-    private var router: RouterProtocol
-
-    private var weatherStorageModel: WeatherInfoModelProtocol
+    private var mainWeatherPresenter: MainWeatherPresenterProtocol
 
     private let locationPages: CustomPageControl = {
         let locationPages = CustomPageControl(frame: .zero)
@@ -24,6 +22,7 @@ class MainViewController: UIViewController {
 
     private let addLocationButton: UIButton = {
         let addLocButton = UIButton()
+        addLocButton.setBackgroundImage(UIImage(named: "addPng"), for: .normal)
         return addLocButton
     }()
 
@@ -37,9 +36,10 @@ class MainViewController: UIViewController {
         return localWeatherCollectionView
     }()
 
-    init(router: RouterProtocol, model: WeatherInfoModelProtocol) {
-        self.weatherStorageModel = model
-        self.router = router
+    private let spinner = UIActivityIndicatorView(style: .medium)
+
+    init(presenter: MainWeatherPresenterProtocol) {
+        self.mainWeatherPresenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -49,72 +49,24 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        localWeatherCollectionView.register(LocalWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "LocalWeatherCollectionViewCell")
+        mainWeatherPresenter.setPresented(viewController: self)
+        localWeatherCollectionView.register(LocalWeatherCollectionViewCell.self,
+                                            forCellWithReuseIdentifier: "LocalWeatherCollectionViewCell")
         localWeatherCollectionView.delegate = self
         localWeatherCollectionView.dataSource = self
         locationPages.delegate = self
-        refrashAllData()
-    }
 
-    override func viewWillAppear(_ animated: Bool) {
-        setupNavItem()
+        setupNavItemBarButtons()
         setupSubviews()
-        setupAddLocationButton()
-    }
+        setupAddLocationButtonTarget()
 
-    func refrashAllData() {
-        guard weatherStorageModel.locations.isEmpty else {
-            for location in weatherStorageModel.locations {
-                self.fetchWeatherFromModel(aboutCity: location)
-            }
-            return
-        }
-
-        weatherStorageModel.fetchFirstLocation { [weak self] firstLocation in
-            self?.fetchWeatherFromModel(aboutCity: firstLocation)
-        }
-    }
-
-    func refrashDataOf(newLocation: Localizable) {
-        guard let location = newLocation as? Location else {
-            return
-        }
-        weatherStorageModel.addLocation(location)
-
-        self.fetchWeatherFromModel(aboutCity: location)
-
-        setupSubviews()
-    }
-
-    func correctLocationsInModes() {
-        weatherStorageModel.locations = []
-        for item in weatherStorageModel.storage {
-            let lon = item[0].longitude
-            let lat = item[0].latitude
-            let location = Location(latitude: lat, longitude: lon)
-            weatherStorageModel.addLocation(location)
-        }
-    }
-
-    private func fetchWeatherFromModel(aboutCity city: Localizable) {
-        weatherStorageModel.fetchWeather(inCity: city) { [weak self] result in
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
-                    self?.localWeatherCollectionView.reloadData()
-                }
-            case .failure(let error):
-                print("ERROR \(error.localizedDescription)")
-            }
-        }
+        mainWeatherPresenter.fetchWeather()
     }
 
     private func setupSubviews() {
         let userData = UserDefaults.standard
         if userData.bool(forKey: UserDefaultsKeys.locationAvailible.rawValue) {
-            [locationPages, localWeatherCollectionView].forEach { item in
-                view.addSubview(item)
-            }
+            [locationPages, localWeatherCollectionView].forEach { view.addSubview($0) }
             setupConstraints()
         } else {
             view.addSubview(addLocationButton)
@@ -127,34 +79,28 @@ class MainViewController: UIViewController {
         let userData = UserDefaults.standard
         if userData.bool(forKey: UserDefaultsKeys.locationAvailible.rawValue) {
             locationPages.snp.makeConstraints { make in
-                make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-                make.left.equalTo(view.safeAreaLayoutGuide.snp.left)
-                make.right.equalTo(view.safeAreaLayoutGuide.snp.right)
-                make.bottom.equalTo(localWeatherCollectionView.snp.top)
+                make.top.left.right.equalTo(view.safeAreaLayoutGuide)
+                make.height.equalTo(26)
             }
 
             localWeatherCollectionView.snp.makeConstraints { make in
                 make.top.equalTo(locationPages.snp.bottom)
-                make.left.equalTo(view.safeAreaLayoutGuide.snp.left)
-                make.right.equalTo(view.safeAreaLayoutGuide.snp.right)
-                make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+                make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
             }
         } else {
             addLocationButton.snp.makeConstraints { make in
-                make.centerX.equalTo(view.snp.centerX)
-                make.centerY.equalTo(view.snp.centerY)
+                make.centerX.centerY.equalToSuperview()
                 make.width.equalTo(view.bounds.width/4)
                 make.height.equalTo(view.bounds.width/4)
             }
         }
     }
 
-    private func setupAddLocationButton() {
-        addLocationButton.setBackgroundImage(UIImage(named: "addPng"), for: .normal)
+    private func setupAddLocationButtonTarget() {
         addLocationButton.addTarget(self, action: #selector(goToAddLocation), for: .touchUpInside)
     }
 
-    private func setupNavItem() {
+    private func setupNavItemBarButtons() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "menu"),
                                                            style: .done,
                                                            target: self,
@@ -179,7 +125,61 @@ class MainViewController: UIViewController {
 
     @objc
     func goToAddLocation() {
-        router.showAddCityAlertVC(onMainVC: self)
+        let alertVC = UIAlertController(title: "Добавить город",
+                                        message: "введите название города на английском или русском языке.",
+                                        preferredStyle: .alert)
+
+        alertVC.addTextField(configurationHandler: { $0.placeholder = "City..." })
+
+        alertVC.addAction(UIAlertAction(title: "OK",
+                                        style: .default,
+                                        handler: {[weak self] _ in
+
+            guard let name = alertVC.textFields?.first?.text, !name.isEmpty else {
+                return
+            }
+
+            self?.mainWeatherPresenter.fetchLocation(ofCity: name, complition: { [weak self] in
+                self?.setupSubviews()
+            })
+
+        }))
+
+        alertVC.addAction(UIAlertAction(title: "Отмена",
+                                        style: .cancel,
+                                        handler: nil))
+
+        present(alertVC, animated: true)
+    }
+}
+
+extension MainViewController: MainWeatherPresenterDelegate {
+    func reload() {
+        localWeatherCollectionView.reloadData()
+    }
+
+    func startSpinner() {
+        spinner.startAnimating()
+        spinner.color = .appColor(name: .appBlueForToggle)
+        view.addSubview(spinner)
+        spinner.center = view.center
+    }
+
+    func stopSpinner() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+    }
+
+    func showWarning(error: String) {
+        let alertVC = UIAlertController(title: "Ошибка подключения",
+                                        message: "ошибка \(error). проверьте подключение к интернету и перезагрузите приложение",
+                                        preferredStyle: .alert)
+
+        alertVC.addAction(UIAlertAction(title: "Ок",
+                                        style: .cancel,
+                                        handler: nil))
+
+        present(alertVC, animated: true)
     }
 }
 
@@ -189,8 +189,7 @@ extension MainViewController: UICollectionViewDelegate {
 
 extension MainViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        let numberOfModels = weatherStorageModel.storage.count
-
+        let numberOfModels = mainWeatherPresenter.storage?.count ?? 0
         locationPages.numberOfPages = numberOfModels
         return numberOfModels
     }
@@ -200,17 +199,17 @@ extension MainViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LocalWeatherCollectionViewCell", for: indexPath) as! LocalWeatherCollectionViewCell
-        cell.setCell(router: router)
-
-        if !weatherStorageModel.storage.isEmpty {
-            if !weatherStorageModel.storage[indexPath.section].isEmpty {
-                let localWeather = weatherStorageModel.storage[indexPath.section][0]
-                cell.setupCellsSubviewsWithInfo(about: localWeather)
-                self.navigationItem.title = localWeather.timezone
-                return cell
-            }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LocalWeatherCollectionViewCell", for: indexPath) as? LocalWeatherCollectionViewCell else {
+            return UICollectionViewCell()
         }
+
+        guard let storage = mainWeatherPresenter.storage,
+              let localWeather = storage[indexPath.section].first else {
+            return cell
+        }
+        cell.setCell(coordinator: mainWeatherPresenter.coordinator)
+        cell.setupCellsSubviewsWithInfo(about: localWeather)
+        self.navigationItem.title = localWeather.timezone
         return cell
     }
 
@@ -236,9 +235,10 @@ extension MainViewController: UIScrollViewDelegate {
 
 extension MainViewController: PageControllDelegate {
     func changeNaviTitle() {
-        if !weatherStorageModel.storage.isEmpty {
-            let localWeather = weatherStorageModel.storage[locationPages.currentPage][0]
-            self.navigationItem.title = localWeather.timezone
+        guard let storage = mainWeatherPresenter.storage,
+              let localWeather = storage[locationPages.currentPage].first else {
+            return
         }
+        self.navigationItem.title = localWeather.timezone
     }
 }

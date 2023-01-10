@@ -8,14 +8,14 @@
 import UIKit
 import SnapKit
 
-class OnboardingViewController: UIViewController {
+final class OnboardingViewController: UIViewController {
 
-    private let router: RouterProtocol
+    private let presenter: OnboardingPresenterProtocol
 
     private let scrollView = OnboardingView()
 
-    init(router: RouterProtocol) {
-        self.router = router
+    init(presenter: OnboardingPresenterProtocol) {
+        self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -35,15 +35,14 @@ class OnboardingViewController: UIViewController {
 
     private func setupSubviews() {
         view.addSubview(scrollView)
-        scrollView.setButtonsActions(target: self, agree: #selector(agreeAction), disagree: #selector(disagreeAction))
+        scrollView.setButtonsActions(target: self,
+                                     agree: #selector(agreeAction),
+                                     disagree: #selector(disagreeAction))
     }
 
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.top.left.right.bottom.equalToSuperview()
         }
     }
 
@@ -52,7 +51,7 @@ class OnboardingViewController: UIViewController {
         let userData = UserDefaults.standard
         userData.set(true, forKey: UserDefaultsKeys.onboardingCompleted.rawValue)
         userData.set(true, forKey: UserDefaultsKeys.locationAvailible.rawValue)
-        router.showMainVC()
+        presenter.showMainVC()
     }
 
     @objc
@@ -60,7 +59,6 @@ class OnboardingViewController: UIViewController {
         let userData = UserDefaults.standard
         userData.set(true, forKey: UserDefaultsKeys.onboardingCompleted.rawValue)
         userData.set(false, forKey: UserDefaultsKeys.locationAvailible.rawValue)
-        router.showMainVC()
+        presenter.showMainVC()
     }
-
 }

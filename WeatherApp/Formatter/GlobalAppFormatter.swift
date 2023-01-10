@@ -20,10 +20,14 @@ protocol AppFormatter {
 
 }
 
-class GlobalAppFormatter: AppFormatter {
+final class GlobalAppFormatter: AppFormatter {
     static let shared = GlobalAppFormatter()
 
     private let dateFormatter = DateFormatter()
+
+    private init() {
+
+    }
 
     func formateDate(fromUNIX date: Int, to format: AppDateVariants) -> String {
         let dateInDouble = Double(date)
@@ -56,5 +60,4 @@ class GlobalAppFormatter: AppFormatter {
             return false
         }
     }
-
 }
